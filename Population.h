@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "HyperParameterGroup.h"
+using namespace std ;
 
 namespace LNE
 {
