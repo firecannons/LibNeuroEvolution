@@ -9,7 +9,7 @@ namespace LNE
         CurrentGroupIndex = 0 ;
         NumberGroups = InNumberGroups ;
         NumberNetworksPerGroup = InNumberNetworksPerGroup ;
-        GroupEvolutionGenerations = GroupEvolutionGenerations ;
+        GroupEvolutionGenerations = InGroupEvolutionGenerations ;
         Groups . resize ( NumberGroups ) ;
         unsigned int GroupIterator = 0 ;
         while ( GroupIterator < NumberGroups )
@@ -33,7 +33,7 @@ namespace LNE
     {
         if ( this == & SourcePopulation )
         {
-            return * this;
+            return * this ;
         }
         else
         {
@@ -44,21 +44,10 @@ namespace LNE
             NumberGroups = SourcePopulation . NumberGroups ;
             NumberNetworksPerGroup = SourcePopulation . NumberNetworksPerGroup ;
             GroupEvolutionGenerations = SourcePopulation . GroupEvolutionGenerations ;
-            return * this;
+            return * this ;
         }
     }
-
-    vector < HyperParameterGroup * > & Population :: GetGroups ( ) const
-    {
-        return Groups ;
-    }
-
-    void Population :: SetGroups ( vector < HyperParameterGroup * > & SourceGroups )
-    {
-        DeleteGroups ( ) ;
-        CopyGroups ( SourceGroups ) ;
-    }
-
+    
     unsigned int Population :: GetCurrentGeneration ( ) const
     {
         return CurrentGeneration ;
@@ -80,9 +69,16 @@ namespace LNE
     Network * Population :: GetCurrentNetwork ( ) const
     {
         Network * output ;
-        if ( CurrentGroupIndex < NumberGroups && CurrentNetworkIndex < NumberNetworksPerGroup )
+        if ( CurrentGroupIndex < NumberGroups )
         {
-            output = & Groups [ CurrentGroupIndex ] -> GetCurrentNetwork ( ) ;
+            if ( Groups -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
+            {
+                output = & Groups [ CurrentGroupIndex ] -> GetCurrentNetwork ( ) ;
+            }
+            else
+            {
+                output = nullptr ;
+            }
         }
         else
         {
@@ -95,9 +91,9 @@ namespace LNE
     {
         if ( CurrentGroupIndex < NumberGroups )
         {
-            if ( CurrentNetworkIndex < NumberNetworks )
+            if ( Groups [ CurrentGroupIndex ] -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
             {
-                CurrentNetworkIndex = CurrentNetworkIndex + 1 ;
+                Groups [ CurrentGroupIndex ] -> ToNextNetwork ( ) ;
             }
             else
             {
@@ -110,7 +106,6 @@ namespace LNE
     {
         Evolve ( ) ;
         ResetIndexes ( ) ;
-        ResetGroupsIndexes ( ) ;
         CurrentGeneration = CurrentGeneration + 1 ;
     }
 
@@ -182,7 +177,7 @@ namespace LNE
         unsigned int GroupIterator = 0 ;
         while ( GroupIterator < NumberGroups )
         {
-            Groups [ GroupIterator ] -> EvolveNetworks ( ) ;
+            Groups [ GroupIterator ] -> EndGeneration ( ) ;
             GroupIterator = GroupIterator + 1 ;
         }
     }
@@ -190,16 +185,6 @@ namespace LNE
     void Population :: ResetIndexes ( )
     {
         CurrentGroupIndex = 0 ;
-    }
-
-    void Population :: ResetGroupsIndexes ( )
-    {
-        unsigned int GroupIterator = 0 ;
-        while ( GroupIterator < NumberGroups )
-        {
-            Groups [ GroupIterator ] -> EndGeneration ( ) ;
-            GroupIterator = GroupIterator + 1 ;
-        }
     }
 
     void Population :: DeleteGroups ( )

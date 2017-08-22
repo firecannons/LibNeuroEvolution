@@ -3,15 +3,16 @@
 namespace LNE
 {
 
-    HyperParameterGroup :: HyperParameterGroup( vector < unsigned int > & Sizes , unsigned int InNumberNetworks )
+    HyperParameterGroup :: HyperParameterGroup( vector < unsigned int > & InSizes , unsigned int InNumberNetworksPerGroup )
     {
-        NumberNetworks = InNumberNetworks ;
+        NumberNetworksPerGroup = InNumberNetworksPerGroup ;
         MaxWeightShift = DEFAULT_WEIGHT_MAX_SHIFT ;
         MinWeightShift = DEFAULT_WEIGHT_MIN_SHIFT ;
         NewWeightMax = DEFAULT_NEW_WEIGHT_MAX ;
         NewWeightMin = DEFAULT_NEW_WEIGHT_MIN ;
         KillRatio = DEFAULT_KILL_RATIO ;
         MutateRatio = DEFAULT_MUTATE_RATIO ;
+        CurrentNetworkIndex = 0 ;
         Networks . resize ( NumberNetworks ) ;
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < NumberNetworks )
@@ -23,25 +24,53 @@ namespace LNE
 
     HyperParameterGroup :: ~ HyperParameterGroup ( )
     {
-        //dtor
+        DeleteNetworks ( ) ;
     }
 
-    HyperParameterGroup::HyperParameterGroup(const HyperParameterGroup& other)
+    HyperParameterGroup :: HyperParameterGroup ( const HyperParameterGroup & Source )
     {
-        //copy ctor
+        * this = Source ;
     }
 
-    HyperParameterGroup& HyperParameterGroup::operator=(const HyperParameterGroup& rhs)
+    HyperParameterGroup & HyperParameterGroup :: operator = ( const HyperParameterGroup & SourceGroup )
     {
-        if (this == &rhs) return *this; // handle self assignment
-        //assignment operator
-        return *this;
+        if ( this == & rhs )
+        {
+            return * this ;
+        }
+        else
+        {
+            DeleteGroups ( ) ;
+            CopyGroups ( SourceGroup . Networks ) ;
+            MaxWeightShift = SourceGroup . MaxWeightShift ;
+            MinWeightShift = SourceGroup . MinWeightShift ;
+            NewWeightMax = SourceGroup . NewWeightMax ;
+            NewWeightMin = SourceGroup . NewWeightMin ;
+            KillRatio = SourceGroup . KillRatio ;
+            MutateRatio = SourceGroup . MutateRatio ;
+            NumberNetworksPerGroup = SourceGroup . NumberNetworksPerGroup ;
+            CurrentNetworkIndex = SourceGroup . CurrentNetworkIndex ;
+            return * this;
+        }
+    }
+    
+    void HyperParameterGroup :: ToNextNetwork ( )
+    {
+        if ( CurrentNetworkIndex < NumberNetworksPerGroup )
+        {
+            CurrentNetworkIndex = CurrentNetworkIndex + 1 ;
+        }
+    }
+    
+    unsigned int HyperParameterGroup :: GetCurrentNetworkIndex ( ) const
+    {
+        return CurrentNetworkIndex ;
     }
 
     void HyperParameterGroup :: DeleteNetworks ( )
     {
         unsigned int NetworkIterator = 0 ;
-        while ( NetworkIterator < NumberNetworks )
+        while ( NetworkIterator < NumberNetworksPerGroup )
         {
             delete Networks [ NetworkIterator ] ;
             NetworkIterator = NetworkIterator + 1 ;

@@ -30,17 +30,22 @@ namespace LNE
     class HyperParameterGroup
     {
         public:
-            HyperParameterGroup ( vector < unsigned int > & Sizes , unsigned int NumberNetworks ) ;
+            HyperParameterGroup ( vector < unsigned int > & InSizes , unsigned int InNumberNetworksPerGroup ) ;
 
             ~HyperParameterGroup ( ) ;
 
             HyperParameterGroup ( const HyperParameterGroup & other ) ;
 
             HyperParameterGroup & operator = ( const HyperParameterGroup & other ) ;
+            
+            void ToNextNetwork ( ) ;
+            
+            unsigned int GetCurrentNetworkIndex ( ) const ;
 
 
 
         private:
+            float CurrentNetworkIndex ;
             float MaxWeightShift ;
             float MinWeightShift ;
             float NewWeightMax ;
@@ -49,6 +54,10 @@ namespace LNE
             float MutateRatio ;
             unsigned int NumberNetworks ;
             vector < NeuralNetwork * > Networks ;
+            
+            DeleteNetworks ( ) ;
+            CopyNetworks ( vector < NeuralNetwork * > Networks ) ;
+            
     };
 
 }
