@@ -5,8 +5,8 @@
 
 namespace LNE
 {
-    const float WEIGHT_MAX_SHIFT = 0.1 ;
-    const float WEIGHT_MIN_SHIFT = -0.1 ;
+    const float WEIGHT_POS_MAX_SHIFT = 0.1 ;
+    const float WEIGHT_NEG_MAX_SHIFT = -0.1 ;
     const float NEW_WEIGHT_MAX = 1 ;
     const float NEW_WEIGHT_MIN = -1 ;
     const float WEIGHT_MAX = 5 ;
@@ -29,9 +29,9 @@ namespace LNE
 
 
         private:
-            float WeightMaxPositiveShift ;
-            float WeightMaxNegativeShift ;
-            vector < NeuralNetwork > Networks ;
+            float MaxPosShift ;
+            float MinPosShift ;
+            vector < NeuralNetwork * > Networks ;
     };
 
 }
