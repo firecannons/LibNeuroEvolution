@@ -37,10 +37,14 @@ namespace LNE
             HyperParameterGroup ( const HyperParameterGroup & other ) ;
 
             HyperParameterGroup & operator = ( const HyperParameterGroup & other ) ;
-            
+
             void ToNextNetwork ( ) ;
-            
+
             unsigned int GetCurrentNetworkIndex ( ) const ;
+
+            void SortNetworks ( ) ;
+
+            float GetBestNetworkFitness ( ) const ;
 
 
 
@@ -52,12 +56,12 @@ namespace LNE
             float NewWeightMin ;
             float KillRatio ;
             float MutateRatio ;
-            unsigned int NumberNetworks ;
+            unsigned int NumberNetworksPerGroup ;
             vector < NeuralNetwork * > Networks ;
-            
-            DeleteNetworks ( ) ;
-            CopyNetworks ( vector < NeuralNetwork * > Networks ) ;
-            
+
+            void DeleteNetworks ( ) ;
+            void CopyNetworks ( vector < NeuralNetwork * > SourceNetworks ) ;
+
     };
 
 }

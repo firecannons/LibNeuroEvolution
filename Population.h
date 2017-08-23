@@ -14,11 +14,11 @@ namespace LNE
     {
         public:
             Population( vector < unsigned int > InSizes , unsigned int InNumberGroups , unsigned int InNumberNetworksPerGroup
-                       unsigned int InGroupEvolutionGenerations );
+                       unsigned int InGroupEvolutionGenerations ) ;
 
             ~ Population ( ) ;
 
-            Population( const Population & SourcePopulation );
+            Population( const Population & SourcePopulation ) ;
 
             Population & operator = ( const Population & SourcePopulation ) ;
 
@@ -53,7 +53,6 @@ namespace LNE
             void EvolveNetworks ( ) ;
             void ResetIndexes ( ) ;
             void DeleteGroups ( ) ;
-            void ResetGroupsIndexes ( ) ;
             void CopyGroups ( vector < HyperParameterGroup * > & SourceGroups ) ;
 
     };

@@ -47,7 +47,7 @@ namespace LNE
             return * this ;
         }
     }
-    
+
     unsigned int Population :: GetCurrentGeneration ( ) const
     {
         return CurrentGeneration ;
@@ -132,7 +132,7 @@ namespace LNE
             unsigned int GroupIterator2 = GroupIterator ;
             while ( GroupIterator2 < NumberGroups )
             {
-                if ( Groups [ GroupIterator2 ] -> BestNetworksFitness ( ) < Groups [ GroupIterator2 + 1 ] -> BestNetworksFitness ( ) )
+                if ( Groups [ GroupIterator2 ] -> GetBestNetworksFitness ( ) < Groups [ GroupIterator2 + 1 ] -> GetBestNetworksFitness ( ) )
                 {
                     HyperParameterGroup * Temp = Groups [ GroupIterator2 ] ;
                     Groups [ GroupIterator2 ] = Groups [ GroupIterator2 + 1 ] ;
@@ -200,7 +200,7 @@ namespace LNE
     void Population :: CopyGroups ( vector < HyperParameterGroup * > & SourceGroups )
     {
         unsigned int GroupIterator = 0 ;
-        while ( GroupIterator < NumberGroups )
+        while ( GroupIterator < SourceGroups . size ( ) )
         {
             Groups [ GroupIterator ] = new HyperParameterGroup ( SourceGroups [ GroupIterator ] ) ;
             GroupIterator = GroupIterator + 1 ;

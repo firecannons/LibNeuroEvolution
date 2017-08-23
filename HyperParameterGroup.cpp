@@ -53,7 +53,7 @@ namespace LNE
             return * this;
         }
     }
-    
+
     void HyperParameterGroup :: ToNextNetwork ( )
     {
         if ( CurrentNetworkIndex < NumberNetworksPerGroup )
@@ -61,10 +61,35 @@ namespace LNE
             CurrentNetworkIndex = CurrentNetworkIndex + 1 ;
         }
     }
-    
+
     unsigned int HyperParameterGroup :: GetCurrentNetworkIndex ( ) const
     {
         return CurrentNetworkIndex ;
+    }
+
+    void HyperParameterGroup :: SortNetworks ( )
+    {
+        unsigned int NetworkIterator = 0 ;
+        while ( NetworkIterator < NumberNetworksPerGroup )
+        {
+            unsigned int NetworkIterator2 = NetworkIterator ;
+            while ( NetworkIterator2 < NumberNetworksPerGroup )
+            {
+                if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) < Groups [ NetworkIterator2 + 1 ] -> GetFitness ( ) )
+                {
+                    NeuralNetwork * Temp = Networks [ NetworkIterator2 ] ;
+                    Networks [ NetworkIterator2 ] = Networks [ NetworkIterator2 + 1 ] ;
+                    Networks [ NetworkIterator2 + 1 ] = Temp ;
+                }
+                NetworkIterator2 = NetworkIterator2 + 1 ;
+            }
+            NetworkIterator = NetworkIterator + 1 ;
+        }
+    }
+
+    void GetBestNetworkFitness ( ) const
+    {
+        Networks [ 0 ] -> GetFitness ( ) ;
     }
 
     void HyperParameterGroup :: DeleteNetworks ( )
@@ -73,6 +98,16 @@ namespace LNE
         while ( NetworkIterator < NumberNetworksPerGroup )
         {
             delete Networks [ NetworkIterator ] ;
+            NetworkIterator = NetworkIterator + 1 ;
+        }
+    }
+
+    void HyperParameterGroup :: CopyNetworks ( vector < NeuralNetwork * > & SourceNetworks )
+    {
+        unsigned int NetworkIterator = 0 ;
+        while ( NetworkIterator < SourceNetworks . size ( ) )
+        {
+            Groups [ NetworkIterator ] = new NeuralNetwork ( SourceGroups [ NetworkIterator ] ) ;
             NetworkIterator = NetworkIterator + 1 ;
         }
     }
