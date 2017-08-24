@@ -66,12 +66,12 @@ namespace LNE
         return output ;
     }
 
-    Network * Population :: GetCurrentNetwork ( ) const
+    NeuralNetwork * Population :: GetCurrentNetwork ( ) const
     {
-        Network * output ;
+        NeuralNetwork * output ;
         if ( CurrentGroupIndex < NumberGroups )
         {
-            if ( Groups -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
+            if ( Groups [ CurrentGroupIndex ] -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
             {
                 output = & Groups [ CurrentGroupIndex ] -> GetCurrentNetwork ( ) ;
             }
@@ -91,11 +91,8 @@ namespace LNE
     {
         if ( CurrentGroupIndex < NumberGroups )
         {
-            if ( Groups [ CurrentGroupIndex ] -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
-            {
-                Groups [ CurrentGroupIndex ] -> ToNextNetwork ( ) ;
-            }
-            else
+            Groups [ CurrentGroupIndex ] -> ToNextNetwork ( ) ;
+            if ( Groups [ CurrentGroupIndex ] -> GetCurrentNetworkIndex ( ) >= NumberNetworksPerGroup )
             {
                 CurrentGroupIndex = CurrentGroupIndex + 1 ;
             }

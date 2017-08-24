@@ -2,6 +2,7 @@
 #define HYPERPARAMETERGROUP_H
 
 #include <vector>
+#include "NeuralNetwork.h"
 using namespace std ;
 
 namespace LNE
@@ -34,9 +35,9 @@ namespace LNE
 
             ~HyperParameterGroup ( ) ;
 
-            HyperParameterGroup ( const HyperParameterGroup & other ) ;
+            HyperParameterGroup ( const HyperParameterGroup & SourceGroup ) ;
 
-            HyperParameterGroup & operator = ( const HyperParameterGroup & other ) ;
+            HyperParameterGroup & operator = ( const HyperParameterGroup & SourceGroup ) ;
 
             void ToNextNetwork ( ) ;
 
@@ -45,6 +46,12 @@ namespace LNE
             void SortNetworks ( ) ;
 
             float GetBestNetworkFitness ( ) const ;
+
+            bool AreNetworksDoneRunning ( ) const ;
+
+            NeuralNetwork * GetCurrentNetwork ( ) const ;
+
+            void ToNextNetwork ( ) ;
 
 
 

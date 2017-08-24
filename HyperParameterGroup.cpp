@@ -17,8 +17,8 @@ namespace LNE
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < NumberNetworks )
         {
-            Groups [ GroupIterator ] = new HyperParameterGroup ( InSizes , InNumberNetworksPerGroup ) ;
-            GroupIterator = GroupIterator + 1 ;
+            Networks [ NetworkIterator ] = new NeuralNetwork ( InSizes ) ;
+            NetworkIterator = NetworkIterator + 1 ;
         }
     }
 
@@ -27,9 +27,9 @@ namespace LNE
         DeleteNetworks ( ) ;
     }
 
-    HyperParameterGroup :: HyperParameterGroup ( const HyperParameterGroup & Source )
+    HyperParameterGroup :: HyperParameterGroup ( const HyperParameterGroup & SourceGroup )
     {
-        * this = Source ;
+        * this = SourceGroup ;
     }
 
     HyperParameterGroup & HyperParameterGroup :: operator = ( const HyperParameterGroup & SourceGroup )
@@ -40,8 +40,8 @@ namespace LNE
         }
         else
         {
-            DeleteGroups ( ) ;
-            CopyGroups ( SourceGroup . Networks ) ;
+            DeleteNetworks ( ) ;
+            CopyNetworks ( SourceGroup . Networks ) ;
             MaxWeightShift = SourceGroup . MaxWeightShift ;
             MinWeightShift = SourceGroup . MinWeightShift ;
             NewWeightMax = SourceGroup . NewWeightMax ;
@@ -75,7 +75,7 @@ namespace LNE
             unsigned int NetworkIterator2 = NetworkIterator ;
             while ( NetworkIterator2 < NumberNetworksPerGroup )
             {
-                if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) < Groups [ NetworkIterator2 + 1 ] -> GetFitness ( ) )
+                if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) < Networks [ NetworkIterator2 + 1 ] -> GetFitness ( ) )
                 {
                     NeuralNetwork * Temp = Networks [ NetworkIterator2 ] ;
                     Networks [ NetworkIterator2 ] = Networks [ NetworkIterator2 + 1 ] ;
@@ -87,9 +87,41 @@ namespace LNE
         }
     }
 
-    void GetBestNetworkFitness ( ) const
+    void HyperParameterGroup :: GetBestNetworkFitness ( ) const
     {
         Networks [ 0 ] -> GetFitness ( ) ;
+    }
+
+    bool HyperParameterGroup :: AreNetworksDoneRunning ( ) const
+    {
+        bool Output = false ;
+        if ( CurrentNetworkIndex == NumberNetworksPerGroup )
+        {
+            Output = true ;
+        }
+        return Output ;
+    }
+
+    NeuralNetwork * HyperParameterGroup :: GetCurrentNetwork ( ) const
+    {
+        NeuralNetwork * OutputNetwork ;
+        if ( CurrentNetworkIndex < NumberNetworksPerGroup )
+        {
+            OutputNetwork = & Networks [ CurrentNetworkIndex ] ;
+        }
+        else
+        {
+            OutputNetwork = nullptr ;
+        }
+        return OutputNetwork ;
+    }
+
+    void ToNextNetwork ( )
+    {
+        if ( CurrentNetworkIndex < NumberNetworksPerGroup )
+        {
+            CurrentNetworkIndex = CurrentNetworkIndex + 1 ;
+        }
     }
 
     void HyperParameterGroup :: DeleteNetworks ( )
@@ -107,7 +139,7 @@ namespace LNE
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < SourceNetworks . size ( ) )
         {
-            Groups [ NetworkIterator ] = new NeuralNetwork ( SourceGroups [ NetworkIterator ] ) ;
+            Networks [ NetworkIterator ] = new NeuralNetwork ( SourceNetworks [ NetworkIterator ] ) ;
             NetworkIterator = NetworkIterator + 1 ;
         }
     }
