@@ -8,6 +8,7 @@ using namespace std ;
 namespace LNE
 {
     const POPULATION_KILL_AMOUNT = 0.3 ;
+    const POPULATION_MUTATE_AMOUNT = 0.3 ;
 
 
     class Population

@@ -12,6 +12,7 @@ namespace LNE
         NewWeightMin = DEFAULT_NEW_WEIGHT_MIN ;
         KillRatio = DEFAULT_KILL_RATIO ;
         MutateRatio = DEFAULT_MUTATE_RATIO ;
+        WeightShiftChance = WEIGHt
         CurrentNetworkIndex = 0 ;
         Networks . resize ( NumberNetworks ) ;
         unsigned int NetworkIterator = 0 ;
@@ -50,6 +51,7 @@ namespace LNE
             MutateRatio = SourceGroup . MutateRatio ;
             NumberNetworksPerGroup = SourceGroup . NumberNetworksPerGroup ;
             CurrentNetworkIndex = SourceGroup . CurrentNetworkIndex ;
+
             return * this;
         }
     }
@@ -116,12 +118,16 @@ namespace LNE
         return OutputNetwork ;
     }
 
-    void ToNextNetwork ( )
+    void HyperParameterGroup :: Mutate ( )
     {
-        if ( CurrentNetworkIndex < NumberNetworksPerGroup )
-        {
-            CurrentNetworkIndex = CurrentNetworkIndex + 1 ;
-        }
+
+    }
+
+    void HyperParameterGroup :: EndGeneration ( )
+    {
+        SortNetworks ( ) ;
+        KillNetworks ( ) ;
+        MutateNetworks ( ) ;
     }
 
     void HyperParameterGroup :: DeleteNetworks ( )
@@ -140,6 +146,29 @@ namespace LNE
         while ( NetworkIterator < SourceNetworks . size ( ) )
         {
             Networks [ NetworkIterator ] = new NeuralNetwork ( SourceNetworks [ NetworkIterator ] ) ;
+            NetworkIterator = NetworkIterator + 1 ;
+        }
+    }
+
+    void HyperParameterGroup :: KillNetworks ( )
+    {
+        unsigned int StartingKillIndex = ceil ( NumberNetworksPerGroup * ( 1 - KillRatio ) ) ;
+        unsigned int NetworkIterator = StartingKillIndex ;
+        while ( NetworkIterator < NumberNetworksPerGroup )
+        {
+            unsigned int SourceNetworkIndex = NetworkIterator - StartingKillIndex ;
+            * ( Networks [ NetworkIterator ] ) = * ( Networks [ SourceNetworkIndex ] ) ;
+            NetworkIterator = NetworkIterator + 1 ;
+        }
+    }
+
+    void HyperParameterGroup :: MutateNetworks ( )
+    {
+        unsigned int StartingKillIndex = ceil ( NumberNetworksPerGroup * ( 1 - KillRatio ) ) ;
+        unsigned int NetworkIterator = StartingKillIndex ;
+        while ( NetworkIterator < NumberNetworksPerGroup )
+        {
+            Networks [ NetworkIterator ] -> Mutate ( ) ;
             NetworkIterator = NetworkIterator + 1 ;
         }
     }

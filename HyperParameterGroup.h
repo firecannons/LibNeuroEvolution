@@ -15,18 +15,26 @@ namespace LNE
     const float NEW_WEIGHT_MIN = -1 ;
     const float DEFAULT_NEW_WEIGHT_MAX = 0.5 ;
     const float DEFAULT_NEW_WEIGHT_MIN = -0.5 ;
-    const float WEIGHT_MAX = 5 ;
-    const float WEIGHT_MIN = -5 ;
-    const unsigned int MAX_LAYERS = 50 ;
-    const unsigned int MIN_LAYERS = 2 ;
-    const unsigned int MAX_NEURONS_IN_LAYER = 1000000 ;
+
+    const float DEFAULT_KILL_RATIO = 0.5 ;
     const float KILL_RATIO_MAX = 1 ;
     const float KILL_RATIO_MIN = 0 ;
+    const float KILL_RATIO_SHIFT_MAX = 0.2 ;
+    const float KILL_RATIO_SHIFT_MIN = -0.2 ;
+    const float KILL_RATIO_NEW_MAX = 1 ;
+    const float KILL_RATIO_NEW_MIN = 0 ;
+    const float KILL_SHIFT_CHANCE = 0.3 ;
+    const float KILL_NEW_CHANCE = 0.3 ;
+
+    const float DEFAULT_MUTATE_RATIO = 0.5 ;
     const float MUTATE_RATIO_MAX = 1 ;
     const float MUTATE_RATIO_MIN = 0 ;
-    const float DEFAULT_KILL_RATIO = 0.5 ;
-    const float DEFAULT_MUTATE_RATIO = 0.5 ;
-
+    const float MUTATE_RATIO_SHIFT_MAX = 0.2 ;
+    const float MUTATE_RATIO_SHIFT_MIN = -0.2 ;
+    const float MUTATE_RATIO_NEW_MAX = 1 ;
+    const float MUTATE_RATIO_NEW_MIN = 0 ;
+    const float KILL_SHIFT_CHANCE = 0.3 ;
+    const float KILL_NEW_CHANCE = 0.3 ;
 
     class HyperParameterGroup
     {
@@ -51,7 +59,9 @@ namespace LNE
 
             NeuralNetwork * GetCurrentNetwork ( ) const ;
 
-            void ToNextNetwork ( ) ;
+            void EndGeneration ( ) ;
+
+            void Mutate ( ) ;
 
 
 
@@ -63,11 +73,15 @@ namespace LNE
             float NewWeightMin ;
             float KillRatio ;
             float MutateRatio ;
+            float WeightShiftChance ;
+            float WeightNewChance ;
             unsigned int NumberNetworksPerGroup ;
             vector < NeuralNetwork * > Networks ;
 
             void DeleteNetworks ( ) ;
             void CopyNetworks ( vector < NeuralNetwork * > SourceNetworks ) ;
+            void KillNetworks ( ) ;
+            void MutateNetworks ( ) ;
 
     };
 
