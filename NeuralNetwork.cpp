@@ -10,9 +10,10 @@ namespace LNE
             Fitness = DEFAULT_FITNESS ;
             NumberLayersInNetwork = InSizes . size ( ) ;
             unsigned int LayerIterator = 0 ;
+            Layers . resize ( NumberLayersInNetwork ) ;
             while ( LayerIterator < InSizes . size ( ) )
             {
-                Groups [ LayerIterator ] = new Layer ( InSizes ) ;
+                Layers [ LayerIterator ] = new Layer ( InSizes [ LayerIterator ] ) ;
                 LayerIterator = LayerIterator + 1 ;
             }
         }
@@ -53,7 +54,19 @@ namespace LNE
         }
      }
 
-    bool NeuralNetwork :: AreSizesOk ( vector < unsigned int > & InSizes )
+     void NeuralNetwork :: SetInput ( unsigned int Position , float Value )
+     {
+         Layers [ 0 ] -> SetAt ( Position , Value ) ;
+     }
+
+     float NeuralNetwork :: GetOutput ( unsigned int Position )
+     {
+         float Output = 0 ;
+         Output = Layers [ NumberLayersInNetwork ] -> GetAt ( Position ) ;
+         return Output ;
+     }
+
+    bool NeuralNetwork :: AreSizesOk ( vector < unsigned int > & InSizes ) const
     {
         bool Output = true ;
         if ( InSizes . size ( ) > MAX_LAYERS )

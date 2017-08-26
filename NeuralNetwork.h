@@ -23,13 +23,15 @@ namespace LNE
             NeuralNetwork & operator = ( const NeuralNetwork & SourceNetwork ) ;
             void Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
                          NewWeightRangeTop , NewWeightRangeBottom ) ;
+            void SetInput ( unsigned int Position , float Value ) ;
+            float ReadOutput ( unsigned int Position ) const ;
 
         private:
             float Fitness ;
             unsigned int NumberLayersInNetwork ;
             vector < Layer * > Layers ;
 
-            bool AreSizesOk ( vector < unsigned int > & InSizes ) ;
+            bool AreSizesOk ( vector < unsigned int > & InSizes ) const ;
             bool CopyLayers ( vector < Layer * > & Layers ) ;
             void DeleteLayers ( ) ;
     } ;
