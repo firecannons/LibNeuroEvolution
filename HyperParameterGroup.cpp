@@ -12,7 +12,6 @@ namespace LNE
         NewWeightMin = DEFAULT_NEW_WEIGHT_MIN ;
         KillRatio = DEFAULT_KILL_RATIO ;
         MutateRatio = DEFAULT_MUTATE_RATIO ;
-        WeightShiftChance = WEIGHt
         CurrentNetworkIndex = 0 ;
         Networks . resize ( NumberNetworks ) ;
         unsigned int NetworkIterator = 0 ;
@@ -118,17 +117,72 @@ namespace LNE
         return OutputNetwork ;
     }
 
-    void HyperParameterGroup :: Mutate ( )
-    {
-
-    }
-
     void HyperParameterGroup :: EndGeneration ( )
     {
         SortNetworks ( ) ;
         KillNetworks ( ) ;
         MutateNetworks ( ) ;
+        CurrentNetworkIndex = 0 ;
     }
+
+    void HyperParameterGroup :: Mutate ( )
+    {
+        MutateKillRatio ( ) ;
+        MutateMutateRatio ( ) ;
+    }
+
+    void HyperParameterGroup :: MutateKillRatio ( )
+    {
+        float RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < KILL_RATIO_NEW_CHANCE )
+        {
+            float KillRatioNewDist = KILL_RATIO_NEW_MAX - KILL_RATIO_NEW_MIN ;
+            float NewKillRatio = GetProb ( ) * KillRatioNewDist + KILL_RATIO_NEW_MIN ;
+            KillRatio = NewKillRatio ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < KILL_RATIO_SHIFT_CHANCE )
+        {
+            float KillRatioShiftDist = KILL_RATIO_SHIFT_MAX - KILL_RATIO_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * KillRatioShiftDist + KILL_RATIO_SHIFT_MIN ;
+            KillRatio = KillRatio + ShiftAmount ;
+        }
+        if ( KillRatio < KILL_RATIO_MIN )
+        {
+            KillRatio = KILL_RATIO_MIN ;
+        }
+        else if ( KillRatio > KILL_RATIO_MAX )
+        {
+            KillRatio = KILL_RATIO_MAX ;
+        }
+    }
+
+    void HyperParameterGroup :: MutateMutateRatio ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < MUTATE_RATIO_NEW_CHANCE )
+        {
+            float MutateRatioNewDist = MUTATE_RATIO_NEW_MAX - MUTATE_RATIO_NEW_MIN ;
+            float NewMutateRatio = GetProb ( ) * MutateRatioNewDist + MUTATE_RATIO_NEW_MIN ;
+            MutateRatio = NewMutateRatio ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < MUTATE_RATIO_SHIFT_CHANCE )
+        {
+            float MutateRatioShiftDist = MUTATE_RATIO_SHIFT_MAX - MUTATE_RATIO_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * MutateRatioShiftDist + MUTATE_RATIO_SHIFT_MIN ;
+            MutateRatio = MutateRatio + ShiftAmount ;
+        }
+        if ( MutateRatio < MUTATE_RATIO_MIN )
+        {
+            MutateRatio = MUTATE_RATIO_MIN ;
+        }
+        else if ( MutateRatio > MUTATE_RATIO_MAX )
+        {
+            MutateRatio = MUTATE_RATIO_MAX ;
+        }
+    }
+
 
     void HyperParameterGroup :: DeleteNetworks ( )
     {
@@ -164,7 +218,7 @@ namespace LNE
 
     void HyperParameterGroup :: MutateNetworks ( )
     {
-        unsigned int StartingKillIndex = ceil ( NumberNetworksPerGroup * ( 1 - KillRatio ) ) ;
+        unsigned int StartingKillIndex = ceil ( NumberNetworksPerGroup * ( 1 - MutateRatio ) ) ;
         unsigned int NetworkIterator = StartingKillIndex ;
         while ( NetworkIterator < NumberNetworksPerGroup )
         {
