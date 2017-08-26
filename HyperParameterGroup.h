@@ -8,21 +8,66 @@ using namespace std ;
 
 namespace LNE
 {
-    const float WEIGHT_SHIFT_MAX = 0.1 ;
-    const float WEIGHT_SHIFT_MIN = -0.1 ;
-    const float DEFAULT_WEIGHT_MAX_SHIFT = 0.05 ;
-    const float DEFAULT_WEIGHT_MIN_SHIFT = -0.05 ;
-    const float NEW_WEIGHT_MAX = 1 ;
-    const float NEW_WEIGHT_MIN = -1 ;
-    const float DEFAULT_NEW_WEIGHT_MAX = 0.5 ;
-    const float DEFAULT_NEW_WEIGHT_MIN = -0.5 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_MAX = 0.5 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_MIN = -0.4 ;
+    const float DEFAULT_WEIGHT_SHIFT_RANGE_TOP = 0.05 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_SHIFT_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_NEW_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_SHIFT_MIN = -0.1 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_SHIFT_MAX = 0.1 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_NEW_MIN = -0.4 ;
+    const float WEIGHT_SHIFT_RANGE_TOP_NEW_MAX = 0.5 ;
+
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_MAX = 0.4 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_MIN = -0.5 ;
+    const float DEFAULT_WEIGHT_SHIFT_RANGE_BOTTOM = -0.05 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_NEW_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN = -0.1 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MAX = 0.1 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN = -0.5 ;
+    const float WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MAX = 0.4 ;
+
+    const float NEW_WEIGHT_RANGE_TOP_MAX = 1 ;
+    const float NEW_WEIGHT_RANGE_TOP_MIN = -0.9 ;
+    const float DEFAULT_NEW_WEIGHT_RANGE_TOP = 0.5 ;
+    const float NEW_WEIGHT_RANGE_TOP_SHIFT_CHANCE = 0.3 ;
+    const float NEW_WEIGHT_RANGE_TOP_NEW_CHANCE = 0.3 ;
+    const float NEW_WEIGHT_RANGE_TOP_SHIFT_MIN = -0.1 ;
+    const float NEW_WEIGHT_RANGE_TOP_SHIFT_MAX = 0.1 ;
+    const float NEW_WEIGHT_RANGE_TOP_NEW_MIN = -0.9 ;
+    const float NEW_WEIGHT_RANGE_TOP_NEW_MAX = 1 ;
+
+    const float NEW_WEIGHT_RANGE_BOTTOM_MAX = 0.9 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_MIN = -1 ;
+    const float DEFAULT_NEW_WEIGHT_RANGE_BOTTOM = -0.5 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_SHIFT_CHANCE = 0.3 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_NEW_CHANCE = 0.3 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_SHIFT_MIN = -0.1 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_SHIFT_MAX = 0.1 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN = -1 ;
+    const float NEW_WEIGHT_RANGE_BOTTOM_NEW_MAX = 0.9 ;
 
     const float WEIGHT_SHIFT_CHANCE_MAX = 1 ;
     const float WEIGHT_SHIFT_CHANCE_MIN = 0 ;
     const float DEFAULT_WEIGHT_SHIFT_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_CHANCE_SHIFT_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_CHANCE_NEW_CHANCE = 0.3 ;
+    const float WEIGHT_SHIFT_CHANCE_SHIFT_MIN = -0.1 ;
+    const float WEIGHT_SHIFT_CHANCE_SHIFT_MAX = 0.1 ;
+    const float WEIGHT_SHIFT_CHANCE_NEW_MIN = 0 ;
+    const float WEIGHT_SHIFT_CHANCE_NEW_MAX = 1 ;
+
     const float WEIGHT_NEW_CHANCE_MAX = 1 ;
     const float WEIGHT_NEW_CHANCE_MIN = 0 ;
     const float DEFAULT_WEIGHT_NEW_CHANCE = 0.3 ;
+    const float WEIGHT_NEW_CHANCE_SHIFT_CHANCE = 0.3 ;
+    const float WEIGHT_NEW_CHANCE_NEW_CHANCE = 0.3 ;
+    const float WEIGHT_NEW_CHANCE_SHIFT_MIN = -0.1 ;
+    const float WEIGHT_NEW_CHANCE_SHIFT_MAX = 0.1 ;
+    const float WEIGHT_NEW_CHANCE_NEW_MIN = 0 ;
+    const float WEIGHT_NEW_CHANCE_NEW_MAX = 1 ;
+
 
     const float DEFAULT_KILL_RATIO = 0.5 ;
     const float KILL_RATIO_MAX = 1 ;
@@ -75,10 +120,10 @@ namespace LNE
 
         private:
             unsigned int CurrentNetworkIndex ;
-            float MaxWeightShift ;
-            float MinWeightShift ;
-            float NewWeightMax ;
-            float NewWeightMin ;
+            float WeightShiftRangeTop ;
+            float WeightShiftRangeBottom ;
+            float NewWeightRangeTop ;
+            float NewWeightRangeBottom ;
             float KillRatio ;
             float MutateRatio ;
             float WeightShiftChance ;
@@ -86,6 +131,14 @@ namespace LNE
             unsigned int NumberNetworksPerGroup ;
             vector < NeuralNetwork * > Networks ;
 
+            void MutateWeightNewChance ( ) ;
+            void MutateWeightShiftChance ( ) ;
+            void ResolveWeightNewRange ( ) ;
+            void MutateWeightNewRangeTop ( ) ;
+            void MutateWeightNewRangeBottom ( ) ;
+            void ResolveWeightShiftRange ( ) ;
+            void MutateWeightShiftRangeTop ( ) ;
+            void MutateWeightShiftRangeBottom ( ) ;
             void MutateKillRatio ( ) ;
             void MutateMutateRatio ( ) ;
             void DeleteNetworks ( ) ;

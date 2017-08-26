@@ -6,10 +6,10 @@ namespace LNE
     HyperParameterGroup :: HyperParameterGroup( vector < unsigned int > & InSizes , unsigned int InNumberNetworksPerGroup )
     {
         NumberNetworksPerGroup = InNumberNetworksPerGroup ;
-        MaxWeightShift = DEFAULT_WEIGHT_MAX_SHIFT ;
-        MinWeightShift = DEFAULT_WEIGHT_MIN_SHIFT ;
-        NewWeightMax = DEFAULT_NEW_WEIGHT_MAX ;
-        NewWeightMin = DEFAULT_NEW_WEIGHT_MIN ;
+        WeightShiftRangeTop = DEFAULT_WEIGHT_SHIFT_RANGE_TOP ;
+        WeightShiftRangeBottom = DEFAULT_WEIGHT_SHIFT_RANGE_BOTTOM ;
+        NewWeightRangeTop = DEFAULT_NEW_WEIGHT_RANGE_TOP ;
+        NewWeightRangeBottom = DEFAULT_NEW_WEIGHT_RANGE_BOTTOM ;
         KillRatio = DEFAULT_KILL_RATIO ;
         MutateRatio = DEFAULT_MUTATE_RATIO ;
         CurrentNetworkIndex = 0 ;
@@ -42,10 +42,10 @@ namespace LNE
         {
             DeleteNetworks ( ) ;
             CopyNetworks ( SourceGroup . Networks ) ;
-            MaxWeightShift = SourceGroup . MaxWeightShift ;
-            MinWeightShift = SourceGroup . MinWeightShift ;
-            NewWeightMax = SourceGroup . NewWeightMax ;
-            NewWeightMin = SourceGroup . NewWeightMin ;
+            WeightShiftRangeTop = SourceGroup . WeightShiftRangeTop ;
+            WeightShiftRangeBottom = SourceGroup . WeightShiftRangeBottom ;
+            NewWeightRangeTop = SourceGroup . NewWeightRangeTop ;
+            NewWeightRangeBottom = SourceGroup . NewWeightRangeBottom ;
             KillRatio = SourceGroup . KillRatio ;
             MutateRatio = SourceGroup . MutateRatio ;
             NumberNetworksPerGroup = SourceGroup . NumberNetworksPerGroup ;
@@ -129,7 +129,222 @@ namespace LNE
     {
         MutateKillRatio ( ) ;
         MutateMutateRatio ( ) ;
+        MutateWeightShiftRangeTop ( ) ;
+        MutateWeightShiftRangeBottom ( ) ;
+        ResolveWeightShiftRange ( ) ;
+        MutateWeightNewRangeTop ( ) ;
+        MutateWeightNewRangeBottom ( ) ;
+        ResolveWeightNewRange ( ) ;
+        MutateWeightShiftChance ( ) ;
+        MutateWeightNewChance ( ) ;
     }
+
+    void HyperParameterGroup :: MutateWeightNewChance ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_New_CHANCE_NEW_CHANCE )
+        {
+            float WeightNewChanceNewDist = WEIGHT_NEW_CHANCE_NEW_MAX - WEIGHT_NEW_CHANCE_NEW_MIN ;
+            float NewValue = GetProb ( ) * WeightNewChanceNewDist + WEIGHT_NEW_CHANCE_NEW_MIN ;
+            WeightNewChance = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_NEW_CHANCE_NEW_CHANCE )
+        {
+            float WeightNewChanceShiftDist = WEIGHT_NEW_CHANCE_SHIFT_MAX - WEIGHT_NEW_CHANCE_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * WeightNewChanceShiftDist + WEIGHT_NEW_CHANCE_SHIFT_MIN ;
+            WeightNewChance = MutateRatio + ShiftAmount ;
+        }
+        if ( WeightNewChance < WEIGHT_NEW_CHANCE_MAX )
+        {
+            WeightNewChance = WEIGHT_NEW_CHANCE_MAX ;
+        }
+        else if ( WeightNewChance > WEIGHT_NEW_CHANCE_MIN )
+        {
+            WeightNewChance = WEIGHT_NEW_CHANCE_MIN ;
+        }
+    }
+
+    void HyperParameterGroup :: MutateWeightShiftChance ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_CHANCE_NEW_CHANCE )
+        {
+            float WeightShiftChanceNewDist = WEIGHT_SHIFT_CHANCE_NEW_MAX - WEIGHT_SHIFT_CHANCE_NEW_MIN ;
+            float NewValue = GetProb ( ) * WeightShiftChanceNewDist + WEIGHT_SHIFT_CHANCE_NEW_MIN ;
+            WeightShiftChance = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_CHANCE_SHIFT_CHANCE )
+        {
+            float WeightShiftChanceShiftDist = WEIGHT_SHIFT_CHANCE_SHIFT_MAX - WEIGHT_SHIFT_CHANCE_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * NewWeightRangeTopNewDist + WEIGHT_SHIFT_CHANCE_SHIFT_MIN ;
+            WeightShiftChance = MutateRatio + ShiftAmount ;
+        }
+        if ( WeightShiftChance < WEIGHT_SHIFT_CHANCE_MAX )
+        {
+            WeightShiftChance = WEIGHT_SHIFT_CHANCE_MAX ;
+        }
+        else if ( WeightShiftChance > WEIGHT_SHIFT_CHANCE_MIN )
+        {
+            WeightShiftChance = WEIGHT_SHIFT_CHANCE_MIN ;
+        }
+    }
+
+    void HyperParameterGroup :: ResolveWeightNewRange ( )
+    {
+        if ( WeightNewRangeTop < WeightNewRangeBottom )
+        {
+            float Difference = WeightNewRangeBottom - WeightNewRangeTop ;
+            WeightNewRangeTop = WeightNewRangeTop + ( Difference / 2 ) ;
+            WeightNewRangeBottom = WeightNewRangeBottom - ( Difference / 2 ) ;
+        }
+    }
+
+
+    void HyperParameterGroup :: MutateNewWeightRangeBottom ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < NEW_WEIGHT_RANGE_BOTTOM_NEW_CHANCE )
+        {
+            float NewWeightRangeBottomNewDist = NEW_WEIGHT_RANGE_BOTTOM_NEW_MAX - NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN ;
+            float NewValue = GetProb ( ) * NewWeightRangeBottomNewDist + NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN ;
+            NewWeightRangeBottom = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < NEW_WEIGHT_RANGE_BOTTOM_SHIFT_CHANCE )
+        {
+            float NewWeightRangeBottomShiftDist = NEW_WEIGHT_RANGE_BOTTOM_SHIFT_MAX - NEW_WEIGHT_RANGE_BOTTOM_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * NewWeightRangeBottomShiftDist + NEW_WEIGHT_RANGE_BOTTOM_SHIFT_MIN ;
+            NewWeightRangeBottom = MutateRatio + ShiftAmount ;
+        }
+        if ( NewWeightRangeBottom < NEW_WEIGHT_RANGE_BOTTOM_MIN )
+        {
+            NewWeightRangeBottom = NEW_WEIGHT_RANGE_BOTTOM_MIN ;
+        }
+        else if ( NewWeightRangeBottom > NEW_WEIGHT_RANGE_BOTTOM_MAX )
+        {
+            NewWeightRangeBottom = NEW_WEIGHT_RANGE_BOTTOM_MAX ;
+        }
+    }
+
+    void HyperParameterGroup :: MutateNewWeightRangeTop ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < NEW_WEIGHT_RANGE_TOP_NEW_CHANCE )
+        {
+            float NewWeightRangeTopNewDist = NEW_WEIGHT_RANGE_TOP_NEW_MAX - NEW_WEIGHT_RANGE_TOP_NEW_MIN ;
+            float NewValue = GetProb ( ) * NewWeightRangeTopNewDist + NEW_WEIGHT_RANGE_TOP_NEW_MIN ;
+            NewWeightRangeTop = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < NEW_WEIGHT_RANGE_TOP_SHIFT_CHANCE )
+        {
+            float NewWeightRangeTopShiftDist = NEW_WEIGHT_RANGE_TOP_SHIFT_MAX - NEW_WEIGHT_RANGE_TOP_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * NewWeightRangeTopShiftDist + NEW_WEIGHT_RANGE_TOP_SHIFT_MIN ;
+            NewWeightRangeTop = MutateRatio + ShiftAmount ;
+        }
+        if ( NewWeightRangeTop < NEW_WEIGHT_RANGE_TOP_MIN )
+        {
+            NewWeightRangeTop = NEW_WEIGHT_RANGE_TOP_MIN ;
+        }
+        else if ( NewWeightRangeTop > NEW_WEIGHT_RANGE_TOP_MAX )
+        {
+            NewWeightRangeTop = NEW_WEIGHT_RANGE_TOP_MAX ;
+        }
+    }
+
+    void HyperParameterGroup :: ResolveWeightShiftRange ( )
+    {
+        if ( WeightShiftRangeTop < WeightShiftRangeBottom )
+        {
+            float Difference = WeightShiftRangeBottom - WeightShiftRangeTop ;
+            WeightShiftRangeTop = WeightShiftRangeTop + ( Difference / 2 ) ;
+            WeightShiftRangeBottom = WeightShiftRangeBottom - ( Difference / 2 ) ;
+        }
+    }
+
+
+    void HyperParameterGroup :: MutateWeightShiftRangeBottom ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_NEW_CHANCE )
+        {
+            float WeightShiftRangeBottomNewDist = WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
+            float NewValue = GetProb ( ) * WeightShiftRangeBottomNewDist + WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
+            WeightShiftRangeBottom = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_CHANCE )
+        {
+            float WeightShiftRangeBottomShiftDist = WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * WeightShiftRangeBottomShiftDist + WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+            WeightShiftRangeBottom = MutateRatio + ShiftAmount ;
+        }
+        if ( WeightShiftRangeBottom < WEIGHT_SHIFT_RANGE_BOTTOM_MIN )
+        {
+            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MIN ;
+        }
+        else if ( WeightShiftRangeBottom > WEIGHT_SHIFT_RANGE_BOTTOM_MAX )
+        {
+            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MAX ;
+        }
+    }
+
+    void HyperParameterGroup :: MutateWeightShiftRangeTop ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_TOP_NEW_CHANCE )
+        {
+            float WeightShiftRangeTopNewDist = WEIGHT_SHIFT_RANGE_TOP_NEW_MAX - WEIGHT_SHIFT_RANGE_TOP_NEW_MIN ;
+            float NewValue = GetProb ( ) * WeightShiftRangeTopNewDist + WEIGHT_SHIFT_RANGE_TOP_NEW_MIN ;
+            WeightShiftRangeTop = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_TOP_SHIFT_CHANCE )
+        {
+            float WeightShiftRangeTopShiftDist = WEIGHT_SHIFT_RANGE_TOP_SHIFT_MAX - WEIGHT_SHIFT_RANGE_TOP_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * WeightShiftRangeTopShiftDist + WEIGHT_SHIFT_RANGE_TOP_SHIFT_MIN ;
+            WeightShiftRangeTop = MutateRatio + ShiftAmount ;
+        }
+        if ( WeightShiftRangeTop < WEIGHT_SHIFT_RANGE_TOP_MIN )
+        {
+            WeightShiftRangeTop = WEIGHT_SHIFT_RANGE_TOP_MIN ;
+        }
+        else if ( WeightShiftRangeTop > WEIGHT_SHIFT_RANGE_TOP_MAX )
+        {
+            WeightShiftRangeTop = WEIGHT_SHIFT_RANGE_TOP_MAX ;
+        }
+    }
+
+
+
+    void HyperParameterGroup :: MutateWeightShiftRangeBottom ( )
+    {
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_NEW_CHANCE )
+        {
+            float WeightShiftRangeBottomNewDist = WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
+            float NewValue = GetProb ( ) * WeightShiftRangeBottomNewDist + WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
+            WeightShiftRangeBottom = NewValue ;
+        }
+        RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_CHANCE )
+        {
+            float WeightShiftRangeBottomShiftDist = WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * WeightShiftRangeBottomShiftDist + WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+            WeightShiftRangeBottom = MutateRatio + ShiftAmount ;
+        }
+        if ( WeightShiftRangeBottom < WEIGHT_SHIFT_RANGE_BOTTOM_MIN )
+        {
+            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MIN ;
+        }
+        else if ( WeightShiftRangeBottom > WEIGHT_SHIFT_RANGE_BOTTOM_MAX )
+        {
+            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MAX ;
+        }
+    }
+
 
     void HyperParameterGroup :: MutateKillRatio ( )
     {
@@ -182,6 +397,7 @@ namespace LNE
             MutateRatio = MUTATE_RATIO_MAX ;
         }
     }
+
 
 
     void HyperParameterGroup :: DeleteNetworks ( )
