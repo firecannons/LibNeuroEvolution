@@ -1,6 +1,7 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
+#include "LibNeuroEvolutionMath.h"
 #include "Layer.h"
 
 namespace LNE
@@ -20,12 +21,16 @@ namespace LNE
             ~ NeuralNetwork ( ) ;
             NeuralNetwork ( const NeuralNetwork & SourceNetwork ) ;
             NeuralNetwork & operator = ( const NeuralNetwork & SourceNetwork ) ;
+            void Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
+                         NewWeightRangeTop , NewWeightRangeBottom ) ;
 
         private:
             float Fitness ;
             unsigned int NumberLayersInNetwork ;
             vector < Layer * > Layers ;
 
+            bool AreSizesOk ( vector < unsigned int > & InSizes ) ;
+            bool CopyLayers ( vector < Layer * > & Layers ) ;
             void DeleteLayers ( ) ;
     } ;
 }

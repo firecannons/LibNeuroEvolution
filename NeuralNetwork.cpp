@@ -5,13 +5,16 @@ namespace LNE
 
     NeuralNetwork :: NeuralNetwork ( vector < unsigned int > & InSizes )
     {
-        Fitness = DEFAULT_FITNESS ;
-        NumberLayersInNetwork = InSizes . size ( ) ;
-        unsigned int LayerIterator = 0 ;
-        while ( LayerIterator < InSizes . size ( ) )
+        if ( AreSizesOk ( InSizes ) )
         {
-            Groups [ LayerIterator ] = new Layer ( InSizes , InNumberNetworksPerGroup ) ;
-            LayerIterator = LayerIterator + 1 ;
+            Fitness = DEFAULT_FITNESS ;
+            NumberLayersInNetwork = InSizes . size ( ) ;
+            unsigned int LayerIterator = 0 ;
+            while ( LayerIterator < InSizes . size ( ) )
+            {
+                Groups [ LayerIterator ] = new Layer ( InSizes ) ;
+                LayerIterator = LayerIterator + 1 ;
+            }
         }
     }
 
@@ -38,22 +41,57 @@ namespace LNE
         return * this;
     }
 
+    void NeuralNetwork :: Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
+                         NewWeightRangeTop , NewWeightRangeBottom )
+     {
+        unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < Layers . size ( ) )
+        {
+            Layers [ LayerIterator ] -> Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
+                                                     NewWeightRangeTop , NewWeightRangeBottom ) ;
+            LayerIterator = LayerIterator + 1 ;
+        }
+     }
+
+    bool NeuralNetwork :: AreSizesOk ( vector < unsigned int > & InSizes )
+    {
+        bool Output = true ;
+        if ( InSizes . size ( ) > MAX_LAYERS )
+        {
+            Output = false ;
+        }
+        else if ( InSizes . size ( ) < MIN_LAYERS )
+        {
+            Output = false ;
+        }
+        unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < InSizes . size ( ) )
+        {
+            if ( InSizes [ LayerIterator ] . size ( ) > MAX_NEURONS_IN_LAYER )
+            {
+                Output = false ;
+            }
+            LayerIterator = LayerIterator + 1 ;
+        }
+        return Output ;
+    }
+
+    void NeuralNetwork :: CopyLayers ( vector < Layer * > & SourceLayers )
+    {
+        unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < SourceLayers . size ( ) )
+        {
+            Layers [ LayerIterator ] = new Layer ( SourceLayers [ LayerIterator ] ) ;
+            LayerIterator = LayerIterator + 1 ;
+        }
+    }
+
     void NeuralNetwork :: DeleteLayers ( )
     {
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < NumberLayersInNetwork )
         {
             delete Layers [ LayerIterator ] ;
-            LayerIterator = LayerIterator + 1 ;
-        }
-    }
-
-    void NeuralNetwork :: CopyNetworks ( vector < Layer * > & SourceLayers )
-    {
-        unsigned int LayerIterator = 0 ;
-        while ( LayerIterator < SourceLayers . size ( ) )
-        {
-            Layers [ LayerIterator ] = new Layer ( SourceLayers [ LayerIterator ] ) ;
             LayerIterator = LayerIterator + 1 ;
         }
     }

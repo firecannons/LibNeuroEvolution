@@ -434,11 +434,12 @@ namespace LNE
 
     void HyperParameterGroup :: MutateNetworks ( )
     {
-        unsigned int StartingKillIndex = ceil ( NumberNetworksPerGroup * ( 1 - MutateRatio ) ) ;
-        unsigned int NetworkIterator = StartingKillIndex ;
+        unsigned int StartingMutateIndex = ceil ( NumberNetworksPerGroup * ( 1 - MutateRatio ) ) ;
+        unsigned int NetworkIterator = StartingMutateIndex ;
         while ( NetworkIterator < NumberNetworksPerGroup )
         {
-            Networks [ NetworkIterator ] -> Mutate ( ) ;
+            Networks [ NetworkIterator ] -> Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
+                                                     NewWeightRangeTop , NewWeightRangeBottom ) ;
             NetworkIterator = NetworkIterator + 1 ;
         }
     }

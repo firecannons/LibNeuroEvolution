@@ -155,8 +155,8 @@ namespace LNE
 
     void Population :: MutateGroups ( )
     {
-        unsigned int StartingKillIndex = ceil ( NumberGroups * ( 1 - KillRatio ) ) ;
-        unsigned int GroupIterator = StartingKillIndex ;
+        unsigned int StartingMutateIndex = ceil ( NumberGroups * ( 1 - POPULATION_MUTATE_AMOUNT ) ) ;
+        unsigned int GroupIterator = StartingMutateIndex ;
         while ( GroupIterator < NumberGroups )
         {
             Groups [ GroupIterator ] -> Mutate ( ) ;
