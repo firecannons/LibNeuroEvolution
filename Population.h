@@ -7,14 +7,14 @@ using namespace std ;
 
 namespace LNE
 {
-    const POPULATION_KILL_AMOUNT = 0.3 ;
-    const POPULATION_MUTATE_AMOUNT = 0.3 ;
+    const float POPULATION_KILL_AMOUNT = 0.3 ;
+    const float POPULATION_MUTATE_AMOUNT = 0.3 ;
 
 
     class Population
     {
         public:
-            Population( vector < unsigned int > InSizes , unsigned int InNumberGroups , unsigned int InNumberNetworksPerGroup
+            Population( vector < unsigned int > InSizes , unsigned int InNumberGroups , unsigned int InNumberNetworksPerGroup ,
                        unsigned int InGroupEvolutionGenerations ) ;
 
             ~ Population ( ) ;
@@ -27,7 +27,7 @@ namespace LNE
 
             bool AreAllNetworkRun ( ) const ;
 
-            Network * GetCurrentNetwork ( ) const ;
+            NeuralNetwork * GetCurrentNetwork ( ) const ;
 
             bool ToNextNetwork ( ) ;
 
@@ -49,7 +49,7 @@ namespace LNE
             void Evolve ( ) ;
             void SortGroups ( ) ;
             void KillGroups ( ) ;
-            void MutateGroups ( )
+            void MutateGroups ( ) ;
             void EvolveGroups ( ) ;
             void EvolveNetworks ( ) ;
             void ResetIndexes ( ) ;

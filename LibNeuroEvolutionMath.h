@@ -1,7 +1,7 @@
 #ifndef LIBNEUROEVOLUTIONMATH_H
 #define LIBNEUROEVOLUTIONMATH_H
 
-#include <cmath>
+#include <cstdlib>
 
 namespace LNE
 {

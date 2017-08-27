@@ -18,9 +18,9 @@ namespace LNE
             Layer & operator = ( const Layer & SourceLayer ) ;
             void SetAt ( unsigned int Position , float Value ) ;
             float GetAt ( unsigned int Position ) ;
-            void Pump ( Layer & DestLayer )
+            void Pump ( Layer & DestLayer ) ;
             void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
-                         float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom )
+                         float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom ) ;
 
         private:
             vector < vector < float > > Weights ;
@@ -28,7 +28,7 @@ namespace LNE
             unsigned int SizeOfLayer ;
             unsigned int SizeOfNextLayer ;
 
-            RandomizeWeights ( ) ;
+            void RandomizeWeights ( ) ;
 
     };
 }

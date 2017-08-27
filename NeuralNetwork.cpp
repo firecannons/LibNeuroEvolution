@@ -49,8 +49,8 @@ namespace LNE
         return * this;
     }
 
-    void NeuralNetwork :: Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
-                         NewWeightRangeTop , NewWeightRangeBottom )
+    void NeuralNetwork :: Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
+                                  float WeightShiftRangeBottom , float NewWeightRangeTop , float NewWeightRangeBottom )
     {
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < NumberLayersInNetwork )

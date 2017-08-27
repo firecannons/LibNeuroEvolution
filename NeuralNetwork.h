@@ -22,8 +22,8 @@ namespace LNE
             ~ NeuralNetwork ( ) ;
             NeuralNetwork ( const NeuralNetwork & SourceNetwork ) ;
             NeuralNetwork & operator = ( const NeuralNetwork & SourceNetwork ) ;
-            void Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
-                         NewWeightRangeTop , NewWeightRangeBottom ) ;
+            void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
+                         float WeightShiftRangeBottom , float NewWeightRangeTop , float NewWeightRangeBottom ) ;
             void SetInput ( unsigned int Position , float Value ) ;
             float GetOutput ( unsigned int Position ) const ;
             void Pump ( ) ;
