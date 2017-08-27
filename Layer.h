@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "LibNeuroEvolutionMath.h"
+using namespace std ;
 
 namespace LNE
 {

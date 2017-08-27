@@ -1,7 +1,9 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
+#include <vector>
 #include "Layer.h"
+using namespace std ;
 
 namespace LNE
 {
