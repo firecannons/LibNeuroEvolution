@@ -1,7 +1,6 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
-#include "LibNeuroEvolutionMath.h"
 #include "Layer.h"
 
 namespace LNE
@@ -24,7 +23,8 @@ namespace LNE
             void Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
                          NewWeightRangeTop , NewWeightRangeBottom ) ;
             void SetInput ( unsigned int Position , float Value ) ;
-            float ReadOutput ( unsigned int Position ) const ;
+            float GetOutput ( unsigned int Position ) const ;
+            void Pump ( ) ;
 
         private:
             float Fitness ;

@@ -3,10 +3,23 @@
 
 #include <cmath>
 
-float GetProb ( )
+namespace LNE
 {
-    float Output = ( ( float ) rand ( ) ) / RAND_MAX ;
-    return Output ;
+
+    float GetProb ( )
+    {
+        float Output = ( ( float ) rand ( ) ) / RAND_MAX ;
+        return Output ;
+    }
+
+    float Relu ( float Input )
+    {
+        if ( Input < 0 )
+        {
+            Input = 0 ;
+        }
+        return Input ;
+    }
 }
 
 #endif

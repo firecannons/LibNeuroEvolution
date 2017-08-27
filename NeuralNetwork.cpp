@@ -13,7 +13,14 @@ namespace LNE
             Layers . resize ( NumberLayersInNetwork ) ;
             while ( LayerIterator < InSizes . size ( ) )
             {
-                Layers [ LayerIterator ] = new Layer ( InSizes [ LayerIterator ] ) ;
+                if ( LayerIterator == InSizes . size ( ) - 1 )
+                {
+                    Layers [ LayerIterator ] = new Layer ( InSizes [ LayerIterator ] , 0 ) ;
+                }
+                else
+                {
+                    Layers [ LayerIterator ] = new Layer ( InSizes [ LayerIterator ] , InSizes [ LayerIterator + 1 ] ) ;
+                }
                 LayerIterator = LayerIterator + 1 ;
             }
         }
@@ -44,27 +51,36 @@ namespace LNE
 
     void NeuralNetwork :: Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
                          NewWeightRangeTop , NewWeightRangeBottom )
-     {
-        unsigned int LayerIterator = 0 ;
-        while ( LayerIterator < Layers . size ( ) )
+    {
+    unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < NumberLayersInNetwork )
         {
             Layers [ LayerIterator ] -> Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
                                                      NewWeightRangeTop , NewWeightRangeBottom ) ;
             LayerIterator = LayerIterator + 1 ;
         }
-     }
+    }
 
-     void NeuralNetwork :: SetInput ( unsigned int Position , float Value )
-     {
-         Layers [ 0 ] -> SetAt ( Position , Value ) ;
-     }
+    void NeuralNetwork :: SetInput ( unsigned int Position , float Value )
+    {
+        Layers [ 0 ] -> SetAt ( Position , Value ) ;
+    }
 
-     float NeuralNetwork :: GetOutput ( unsigned int Position )
-     {
-         float Output = 0 ;
-         Output = Layers [ NumberLayersInNetwork ] -> GetAt ( Position ) ;
-         return Output ;
-     }
+    float NeuralNetwork :: GetOutput ( unsigned int Position )
+    {
+        float Output = 0 ;
+        Output = Layers [ NumberLayersInNetwork ] -> GetAt ( Position ) ;
+        return Output ;
+    }
+
+    void NeuralNetwork :: Pump ( )
+    {
+        unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < NumberLayersInNetwork - 1 )
+        {
+            Layers [ LayerIterator ] -> Pump ( Layers [ LayerIterator + 1 ] ) ;
+        }
+    }
 
     bool NeuralNetwork :: AreSizesOk ( vector < unsigned int > & InSizes ) const
     {
