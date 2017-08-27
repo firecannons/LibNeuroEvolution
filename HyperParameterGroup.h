@@ -2,7 +2,7 @@
 #define HYPERPARAMETERGROUP_H
 
 #include <vector>
-#include "LibNeuroEvolution.h"
+#include <cmath>
 #include "NeuralNetwork.h"
 using namespace std ;
 
@@ -133,16 +133,16 @@ namespace LNE
 
             void MutateWeightNewChance ( ) ;
             void MutateWeightShiftChance ( ) ;
-            void ResolveWeightNewRange ( ) ;
-            void MutateWeightNewRangeTop ( ) ;
-            void MutateWeightNewRangeBottom ( ) ;
+            void ResolveNewWeightRange ( ) ;
+            void MutateNewWeightRangeTop ( ) ;
+            void MutateNewWeightRangeBottom ( ) ;
             void ResolveWeightShiftRange ( ) ;
             void MutateWeightShiftRangeTop ( ) ;
             void MutateWeightShiftRangeBottom ( ) ;
             void MutateKillRatio ( ) ;
             void MutateMutateRatio ( ) ;
             void DeleteNetworks ( ) ;
-            void CopyNetworks ( vector < NeuralNetwork * > SourceNetworks ) ;
+            void CopyNetworks ( const vector < NeuralNetwork * > & SourceNetworks ) ;
             void KillNetworks ( ) ;
             void MutateNetworks ( ) ;
 

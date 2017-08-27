@@ -13,9 +13,9 @@ namespace LNE
         KillRatio = DEFAULT_KILL_RATIO ;
         MutateRatio = DEFAULT_MUTATE_RATIO ;
         CurrentNetworkIndex = 0 ;
-        Networks . resize ( NumberNetworks ) ;
+        Networks . resize ( NumberNetworksPerGroup ) ;
         unsigned int NetworkIterator = 0 ;
-        while ( NetworkIterator < NumberNetworks )
+        while ( NetworkIterator < NumberNetworksPerGroup )
         {
             Networks [ NetworkIterator ] = new NeuralNetwork ( InSizes ) ;
             NetworkIterator = NetworkIterator + 1 ;
@@ -34,7 +34,7 @@ namespace LNE
 
     HyperParameterGroup & HyperParameterGroup :: operator = ( const HyperParameterGroup & SourceGroup )
     {
-        if ( this == & rhs )
+        if ( this == & SourceGroup )
         {
             return * this ;
         }
@@ -88,9 +88,9 @@ namespace LNE
         }
     }
 
-    void HyperParameterGroup :: GetBestNetworkFitness ( ) const
+    float HyperParameterGroup :: GetBestNetworkFitness ( ) const
     {
-        Networks [ 0 ] -> GetFitness ( ) ;
+        return Networks [ 0 ] -> GetFitness ( ) ;
     }
 
     bool HyperParameterGroup :: AreNetworksDoneRunning ( ) const
@@ -108,11 +108,11 @@ namespace LNE
         NeuralNetwork * OutputNetwork ;
         if ( CurrentNetworkIndex < NumberNetworksPerGroup )
         {
-            OutputNetwork = & Networks [ CurrentNetworkIndex ] ;
+            OutputNetwork = Networks [ CurrentNetworkIndex ] ;
         }
         else
         {
-            OutputNetwork = nullptr ;
+            OutputNetwork = NULL ;
         }
         return OutputNetwork ;
     }
@@ -132,24 +132,24 @@ namespace LNE
         MutateWeightShiftRangeTop ( ) ;
         MutateWeightShiftRangeBottom ( ) ;
         ResolveWeightShiftRange ( ) ;
-        MutateWeightNewRangeTop ( ) ;
-        MutateWeightNewRangeBottom ( ) ;
-        ResolveWeightNewRange ( ) ;
+        MutateNewWeightRangeTop ( ) ;
+        MutateNewWeightRangeBottom ( ) ;
+        ResolveNewWeightRange ( ) ;
         MutateWeightShiftChance ( ) ;
         MutateWeightNewChance ( ) ;
     }
 
     void HyperParameterGroup :: MutateWeightNewChance ( )
     {
-        RandomNumber = GetProb ( ) ;
-        if ( RandomNumber < WEIGHT_New_CHANCE_NEW_CHANCE )
+        float RandomNumber = GetProb ( ) ;
+        if ( RandomNumber < WEIGHT_NEW_CHANCE_NEW_CHANCE )
         {
             float WeightNewChanceNewDist = WEIGHT_NEW_CHANCE_NEW_MAX - WEIGHT_NEW_CHANCE_NEW_MIN ;
             float NewValue = GetProb ( ) * WeightNewChanceNewDist + WEIGHT_NEW_CHANCE_NEW_MIN ;
             WeightNewChance = NewValue ;
         }
         RandomNumber = GetProb ( ) ;
-        if ( RandomNumber < WEIGHT_NEW_CHANCE_NEW_CHANCE )
+        if ( RandomNumber < WEIGHT_NEW_CHANCE_SHIFT_CHANCE )
         {
             float WeightNewChanceShiftDist = WEIGHT_NEW_CHANCE_SHIFT_MAX - WEIGHT_NEW_CHANCE_SHIFT_MIN ;
             float ShiftAmount = GetProb ( ) * WeightNewChanceShiftDist + WEIGHT_NEW_CHANCE_SHIFT_MIN ;
@@ -167,7 +167,7 @@ namespace LNE
 
     void HyperParameterGroup :: MutateWeightShiftChance ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < WEIGHT_SHIFT_CHANCE_NEW_CHANCE )
         {
             float WeightShiftChanceNewDist = WEIGHT_SHIFT_CHANCE_NEW_MAX - WEIGHT_SHIFT_CHANCE_NEW_MIN ;
@@ -178,7 +178,7 @@ namespace LNE
         if ( RandomNumber < WEIGHT_SHIFT_CHANCE_SHIFT_CHANCE )
         {
             float WeightShiftChanceShiftDist = WEIGHT_SHIFT_CHANCE_SHIFT_MAX - WEIGHT_SHIFT_CHANCE_SHIFT_MIN ;
-            float ShiftAmount = GetProb ( ) * NewWeightRangeTopNewDist + WEIGHT_SHIFT_CHANCE_SHIFT_MIN ;
+            float ShiftAmount = GetProb ( ) * WeightShiftChanceShiftDist + WEIGHT_SHIFT_CHANCE_SHIFT_MIN ;
             WeightShiftChance = MutateRatio + ShiftAmount ;
         }
         if ( WeightShiftChance < WEIGHT_SHIFT_CHANCE_MAX )
@@ -191,20 +191,20 @@ namespace LNE
         }
     }
 
-    void HyperParameterGroup :: ResolveWeightNewRange ( )
+    void HyperParameterGroup :: ResolveNewWeightRange ( )
     {
-        if ( WeightNewRangeTop < WeightNewRangeBottom )
+        if ( NewWeightRangeTop < NewWeightRangeBottom )
         {
-            float Difference = WeightNewRangeBottom - WeightNewRangeTop ;
-            WeightNewRangeTop = WeightNewRangeTop + ( Difference / 2 ) ;
-            WeightNewRangeBottom = WeightNewRangeBottom - ( Difference / 2 ) ;
+            float Difference = NewWeightRangeBottom - NewWeightRangeTop ;
+            NewWeightRangeTop = NewWeightRangeTop + ( Difference / 2 ) ;
+            NewWeightRangeBottom = NewWeightRangeBottom - ( Difference / 2 ) ;
         }
     }
 
 
     void HyperParameterGroup :: MutateNewWeightRangeBottom ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < NEW_WEIGHT_RANGE_BOTTOM_NEW_CHANCE )
         {
             float NewWeightRangeBottomNewDist = NEW_WEIGHT_RANGE_BOTTOM_NEW_MAX - NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN ;
@@ -230,7 +230,7 @@ namespace LNE
 
     void HyperParameterGroup :: MutateNewWeightRangeTop ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < NEW_WEIGHT_RANGE_TOP_NEW_CHANCE )
         {
             float NewWeightRangeTopNewDist = NEW_WEIGHT_RANGE_TOP_NEW_MAX - NEW_WEIGHT_RANGE_TOP_NEW_MIN ;
@@ -264,36 +264,9 @@ namespace LNE
         }
     }
 
-
-    void HyperParameterGroup :: MutateWeightShiftRangeBottom ( )
-    {
-        RandomNumber = GetProb ( ) ;
-        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_NEW_CHANCE )
-        {
-            float WeightShiftRangeBottomNewDist = WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
-            float NewValue = GetProb ( ) * WeightShiftRangeBottomNewDist + WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
-            WeightShiftRangeBottom = NewValue ;
-        }
-        RandomNumber = GetProb ( ) ;
-        if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_CHANCE )
-        {
-            float WeightShiftRangeBottomShiftDist = WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
-            float ShiftAmount = GetProb ( ) * WeightShiftRangeBottomShiftDist + WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
-            WeightShiftRangeBottom = MutateRatio + ShiftAmount ;
-        }
-        if ( WeightShiftRangeBottom < WEIGHT_SHIFT_RANGE_BOTTOM_MIN )
-        {
-            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MIN ;
-        }
-        else if ( WeightShiftRangeBottom > WEIGHT_SHIFT_RANGE_BOTTOM_MAX )
-        {
-            WeightShiftRangeBottom = WEIGHT_SHIFT_RANGE_BOTTOM_MAX ;
-        }
-    }
-
     void HyperParameterGroup :: MutateWeightShiftRangeTop ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < WEIGHT_SHIFT_RANGE_TOP_NEW_CHANCE )
         {
             float WeightShiftRangeTopNewDist = WEIGHT_SHIFT_RANGE_TOP_NEW_MAX - WEIGHT_SHIFT_RANGE_TOP_NEW_MIN ;
@@ -321,7 +294,7 @@ namespace LNE
 
     void HyperParameterGroup :: MutateWeightShiftRangeBottom ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < WEIGHT_SHIFT_RANGE_BOTTOM_NEW_CHANCE )
         {
             float WeightShiftRangeBottomNewDist = WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_NEW_MIN ;
@@ -374,7 +347,7 @@ namespace LNE
 
     void HyperParameterGroup :: MutateMutateRatio ( )
     {
-        RandomNumber = GetProb ( ) ;
+        float RandomNumber = GetProb ( ) ;
         if ( RandomNumber < MUTATE_RATIO_NEW_CHANCE )
         {
             float MutateRatioNewDist = MUTATE_RATIO_NEW_MAX - MUTATE_RATIO_NEW_MIN ;
@@ -410,12 +383,12 @@ namespace LNE
         }
     }
 
-    void HyperParameterGroup :: CopyNetworks ( vector < NeuralNetwork * > & SourceNetworks )
+    void HyperParameterGroup :: CopyNetworks ( const vector < NeuralNetwork * > & SourceNetworks )
     {
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < SourceNetworks . size ( ) )
         {
-            Networks [ NetworkIterator ] = new NeuralNetwork ( SourceNetworks [ NetworkIterator ] ) ;
+            Networks [ NetworkIterator ] = new NeuralNetwork ( * ( SourceNetworks [ NetworkIterator ] ) ) ;
             NetworkIterator = NetworkIterator + 1 ;
         }
     }

@@ -27,6 +27,8 @@ namespace LNE
             void SetInput ( unsigned int Position , float Value ) ;
             float GetOutput ( unsigned int Position ) const ;
             void Pump ( ) ;
+            void SetFitness ( float InFitness ) ;
+            float GetFitness ( ) const ;
 
         private:
             float Fitness ;
@@ -34,7 +36,7 @@ namespace LNE
             vector < Layer * > Layers ;
 
             bool AreSizesOk ( vector < unsigned int > & InSizes ) const ;
-            bool CopyLayers ( vector < Layer * > & Layers ) ;
+            void CopyLayers ( const vector < Layer * > & Layers ) ;
             void DeleteLayers ( ) ;
     } ;
 }

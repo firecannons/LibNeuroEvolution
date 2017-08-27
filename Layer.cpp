@@ -28,28 +28,15 @@ namespace LNE
 
     Layer & Layer :: operator = ( const Layer & SourceLayer )
     {
-        if ( this == & rhs )
+        if ( this == & SourceLayer )
         {
             return * this;
         }
         SizeOfLayer = SourceLayer . SizeOfLayer ;
         SizeOfNextLayer = SourceLayer . SizeOfNextLayer ;
         Weights = SourceLayer . Weights ;
-        Value = SourceLayer . Values ;
+        Values = SourceLayer . Values ;
         return *this;
-    }
-
-    Layer & Layer :: operator = ( const Layer & SourceLayer )
-    {
-        if ( this == & rhs )
-        {
-            return * this ;
-        }
-        SizeOfLayer = SourceLayer . SizeOfLayer ;
-        SizeOfNextLayer = SourceLayer . SizeOfNextLayer ;
-        Weights = SourceLayer . Weights ;
-        Value = SourceLayer . Values ;
-        return * this ;
     }
 
     void Layer :: SetAt ( unsigned int Position , float Value )
@@ -80,7 +67,7 @@ namespace LNE
         }
     }
 
-    void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
+    void Layer :: Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
             float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom )
     {
         float WeightShiftRange = WeightShiftRangeTop - WeightShiftRangeBottom ;

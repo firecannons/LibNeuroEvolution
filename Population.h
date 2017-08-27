@@ -14,8 +14,8 @@ namespace LNE
     class Population
     {
         public:
-            Population( vector < unsigned int > InSizes , unsigned int InNumberGroups , unsigned int InNumberNetworksPerGroup ,
-                       unsigned int InGroupEvolutionGenerations ) ;
+            Population( vector < unsigned int > InSizes , unsigned int InNumberGroups ,
+                       unsigned int InNumberNetworksPerGroup , unsigned int InGroupEvolutionGenerations ) ;
 
             ~ Population ( ) ;
 
@@ -25,7 +25,7 @@ namespace LNE
 
             unsigned int GetCurrentGeneration ( ) const ;
 
-            bool AreAllNetworkRun ( ) const ;
+            bool AreNetworksDoneRunning ( ) const ;
 
             NeuralNetwork * GetCurrentNetwork ( ) const ;
 
@@ -38,7 +38,7 @@ namespace LNE
 
 
         private:
-            vector < HyperParameterGroup > Groups ;
+            vector < HyperParameterGroup * > Groups ;
             unsigned int CurrentGroupIndex ;
             unsigned int CurrentGeneration ;
             unsigned int NumberGroups ;
@@ -54,7 +54,7 @@ namespace LNE
             void EvolveNetworks ( ) ;
             void ResetIndexes ( ) ;
             void DeleteGroups ( ) ;
-            void CopyGroups ( vector < HyperParameterGroup * > & SourceGroups ) ;
+            void CopyGroups ( const vector < HyperParameterGroup * > & SourceGroups ) ;
 
     };
 

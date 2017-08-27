@@ -2,8 +2,8 @@
 
 namespace LNE
 {
-    Population :: Population( vector < unsigned int > InSizes , unsigned int InNumberGroups , unsigned int InNumberNetworksPerGroup
-               unsigned int InGroupEvolutionGenerations )
+    Population :: Population( vector < unsigned int > InSizes , unsigned int InNumberGroups ,
+                             unsigned int InNumberNetworksPerGroup , unsigned int InGroupEvolutionGenerations )
     {
         CurrentGeneration = 0 ;
         CurrentGroupIndex = 0 ;
@@ -73,16 +73,16 @@ namespace LNE
         {
             if ( Groups [ CurrentGroupIndex ] -> GetCurrentNetworkIndex ( ) < NumberNetworksPerGroup )
             {
-                output = & Groups [ CurrentGroupIndex ] -> GetCurrentNetwork ( ) ;
+                output = Groups [ CurrentGroupIndex ] -> GetCurrentNetwork ( ) ;
             }
             else
             {
-                output = nullptr ;
+                output = NULL ;
             }
         }
         else
         {
-            output = nullptr ;
+            output = NULL ;
         }
         return output ;
     }
@@ -116,7 +116,7 @@ namespace LNE
         EvolveNetworks ( ) ;
     }
 
-    void SortGroups ( )
+    void Population :: SortGroups ( )
     {
         unsigned int GroupIterator = 0 ;
         while ( GroupIterator < NumberGroups )
@@ -129,7 +129,7 @@ namespace LNE
             unsigned int GroupIterator2 = GroupIterator ;
             while ( GroupIterator2 < NumberGroups )
             {
-                if ( Groups [ GroupIterator2 ] -> GetBestNetworksFitness ( ) < Groups [ GroupIterator2 + 1 ] -> GetBestNetworksFitness ( ) )
+                if ( Groups [ GroupIterator2 ] -> GetBestNetworkFitness ( ) < Groups [ GroupIterator2 + 1 ] -> GetBestNetworkFitness ( ) )
                 {
                     HyperParameterGroup * Temp = Groups [ GroupIterator2 ] ;
                     Groups [ GroupIterator2 ] = Groups [ GroupIterator2 + 1 ] ;
@@ -196,12 +196,12 @@ namespace LNE
         }
     }
 
-    void Population :: CopyGroups ( vector < HyperParameterGroup * > & SourceGroups )
+    void Population :: CopyGroups ( const vector < HyperParameterGroup * > & SourceGroups )
     {
         unsigned int GroupIterator = 0 ;
         while ( GroupIterator < SourceGroups . size ( ) )
         {
-            Groups [ GroupIterator ] = new HyperParameterGroup ( SourceGroups [ GroupIterator ] ) ;
+            Groups [ GroupIterator ] = new HyperParameterGroup ( * ( SourceGroups [ GroupIterator ] ) ) ;
             GroupIterator = GroupIterator + 1 ;
         }
     }

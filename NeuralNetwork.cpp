@@ -38,7 +38,7 @@ namespace LNE
 
     NeuralNetwork & NeuralNetwork :: operator = ( const NeuralNetwork & SourceNetwork )
     {
-        if ( this == & rhs )
+        if ( this == & SourceNetwork )
         {
             return * this ;
         }
@@ -66,11 +66,21 @@ namespace LNE
         Layers [ 0 ] -> SetAt ( Position , Value ) ;
     }
 
-    float NeuralNetwork :: GetOutput ( unsigned int Position )
+    float NeuralNetwork :: GetOutput ( unsigned int Position ) const
     {
         float Output = 0 ;
         Output = Layers [ NumberLayersInNetwork ] -> GetAt ( Position ) ;
         return Output ;
+    }
+
+    void NeuralNetwork :: SetFitness ( float InFitness )
+    {
+        Fitness = InFitness ;
+    }
+
+    float NeuralNetwork :: GetFitness ( ) const
+    {
+        return Fitness ;
     }
 
     void NeuralNetwork :: Pump ( )
@@ -78,7 +88,7 @@ namespace LNE
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < NumberLayersInNetwork - 1 )
         {
-            Layers [ LayerIterator ] -> Pump ( Layers [ LayerIterator + 1 ] ) ;
+            Layers [ LayerIterator ] -> Pump ( * ( Layers [ LayerIterator + 1 ] ) ) ;
         }
     }
 
@@ -96,7 +106,7 @@ namespace LNE
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < InSizes . size ( ) )
         {
-            if ( InSizes [ LayerIterator ] . size ( ) > MAX_NEURONS_IN_LAYER )
+            if ( InSizes [ LayerIterator ] > MAX_NEURONS_IN_LAYER )
             {
                 Output = false ;
             }
@@ -105,12 +115,12 @@ namespace LNE
         return Output ;
     }
 
-    void NeuralNetwork :: CopyLayers ( vector < Layer * > & SourceLayers )
+    void NeuralNetwork :: CopyLayers ( const vector < Layer * > & SourceLayers )
     {
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < SourceLayers . size ( ) )
         {
-            Layers [ LayerIterator ] = new Layer ( SourceLayers [ LayerIterator ] ) ;
+            Layers [ LayerIterator ] = new Layer ( * ( SourceLayers [ LayerIterator ] ) ) ;
             LayerIterator = LayerIterator + 1 ;
         }
     }
