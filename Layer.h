@@ -18,6 +18,8 @@ namespace LNE
             void SetAt ( unsigned int Position , float Value ) ;
             float GetAt ( unsigned int Position ) ;
             void Pump ( Layer & DestLayer )
+            void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
+                         float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom )
 
         private:
             vector < vector < float > > Weights ;

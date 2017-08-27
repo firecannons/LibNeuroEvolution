@@ -1,4 +1,5 @@
 #include "Layer.h"
+
 namespace LNE
 {
     Layer :: Layer ( unsigned int InSizeOfLayer , unsigned int InSizeOfNextLayer )
@@ -76,6 +77,37 @@ namespace LNE
             Sum = Relu ( Sum ) ;
             DestLayer . SetAt ( NextLayerIterator , Sum ) ;
             NextLayerIterator = NextLayerIterator + 1 ;
+        }
+    }
+
+    void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
+            float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom )
+    {
+        float WeightShiftRange = WeightShiftRangeTop - WeightShiftRangeBottom ;
+        float WeightNewRange = WeightNewRangeTop - WeightNewRangeBottom ;
+        unsigned int RowIterator = 0 ;
+        while ( RowIterator < SizeOfLayer )
+        {
+            unsigned int NextLayerIterator = 0 ;
+            while ( NextLayerIterator < SizeOfNextLayer )
+            {
+                float RandomNumber = GetProb ( ) ;
+                if ( RandomNumber < WeightNewChance )
+                {
+                    float NewAmount = GetProb ( ) * WeightNewRange + WeightNewRangeBottom ;
+                    Weights [ RowIterator ] [ NextLayerIterator ] = NewAmount ;
+                }
+
+                RandomNumber = GetProb ( ) ;
+                if ( RandomNumber < WeightShiftChance )
+                {
+                    float StartingValue = Weights [ RowIterator ] [ NextLayerIterator ] ;
+                    float ShiftAmount = GetProb ( ) * WeightShiftRange + WeightShiftRangeBottom ;
+                    Weights [ RowIterator ] [ NextLayerIterator ] = StartingValue + ShiftAmount ;
+                }
+                NextLayerIterator = NextLayerIterator + 1 ;
+            }
+            RowIterator = RowIterator + 1 ;
         }
     }
 

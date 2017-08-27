@@ -52,7 +52,7 @@ namespace LNE
     void NeuralNetwork :: Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
                          NewWeightRangeTop , NewWeightRangeBottom )
     {
-    unsigned int LayerIterator = 0 ;
+        unsigned int LayerIterator = 0 ;
         while ( LayerIterator < NumberLayersInNetwork )
         {
             Layers [ LayerIterator ] -> Mutate ( WeightShiftChance , WeightNewChance , WeightShiftRangeTop , WeightShiftRangeBottom ,
