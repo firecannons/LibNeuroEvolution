@@ -33,6 +33,10 @@ namespace LNE
 
             void EndGeneration ( ) ;
 
+            float GetBestFitness ( ) ;
+
+            NeuralNetwork * GetBestNetwork ( ) const ;
+
 
 
 
@@ -65,7 +69,7 @@ namespace LNE
     Population :: Population( vector < unsigned int > InSizes , unsigned int InNumberGroups ,
                              unsigned int InNumberNetworksPerGroup , unsigned int InGroupEvolutionGenerations )
     {
-        CurrentGeneration = 0 ;
+        CurrentGeneration = 1 ;
         CurrentGroupIndex = 0 ;
         NumberGroups = InNumberGroups ;
         NumberNetworksPerGroup = InNumberNetworksPerGroup ;
@@ -86,6 +90,7 @@ namespace LNE
 
     Population :: Population ( const Population & SourcePopulation )
     {
+        NumberGroups = 0 ;
         * this = SourcePopulation ;
     }
 
@@ -158,18 +163,37 @@ namespace LNE
 
     void Population :: EndGeneration ( )
     {
-        printf ( "100\n" ) ;
-        fflush ( stdout ) ;
-        //Evolve ( ) ;
-        printf ( "200\n" ) ;
-        fflush ( stdout ) ;
+        Evolve ( ) ;
         ResetIndexes ( ) ;
         CurrentGeneration = CurrentGeneration + 1 ;
     }
 
+    float Population :: GetBestFitness ( )
+    {
+        float BestFitness = -999999999 ;
+        unsigned int GroupIterator = 0 ;
+        while ( GroupIterator < NumberGroups )
+        {
+            float TempFitness = 0 ;
+            TempFitness = Groups [ GroupIterator ] -> GetBestNetworkFitness ( ) ;
+            if ( TempFitness > BestFitness )
+            {
+                BestFitness = TempFitness ;
+            }
+            GroupIterator = GroupIterator + 1 ;
+        }
+        return BestFitness ;
+    }
+
+    NeuralNetwork * Population :: GetBestNetwork ( ) const
+    {
+        NeuralNetwork * OutputNetwork ;
+        OutputNetwork = Groups [ 0 ] -> GetBestNetwork ( ) ;
+        return OutputNetwork ;
+    }
+
     void Population :: Evolve ( )
     {
-
         if ( CurrentGeneration % GroupEvolutionGenerations == 0 )
         {
             EvolveGroups ( ) ;
@@ -183,12 +207,13 @@ namespace LNE
         while ( GroupIterator < NumberGroups )
         {
             Groups [ GroupIterator ] -> SortNetworks ( ) ;
+            GroupIterator = GroupIterator + 1 ;
         }
         GroupIterator = 0 ;
-        while ( GroupIterator < NumberGroups )
+        while ( GroupIterator < NumberGroups - 1 )
         {
             unsigned int GroupIterator2 = GroupIterator ;
-            while ( GroupIterator2 < NumberGroups )
+            while ( GroupIterator2 < NumberGroups - 1 )
             {
                 if ( Groups [ GroupIterator2 ] -> GetBestNetworkFitness ( ) < Groups [ GroupIterator2 + 1 ] -> GetBestNetworkFitness ( ) )
                 {
@@ -259,6 +284,7 @@ namespace LNE
 
     void Population :: CopyGroups ( const vector < HyperParameterGroup * > & SourceGroups )
     {
+        Groups . resize ( SourceGroups . size ( ) ) ;
         unsigned int GroupIterator = 0 ;
         while ( GroupIterator < SourceGroups . size ( ) )
         {

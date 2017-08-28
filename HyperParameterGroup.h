@@ -108,6 +108,8 @@ namespace LNE
 
             float GetBestNetworkFitness ( ) const ;
 
+            NeuralNetwork * GetBestNetwork ( ) const ;
+
             bool AreNetworksDoneRunning ( ) const ;
 
             NeuralNetwork * GetCurrentNetwork ( ) const ;
@@ -181,6 +183,7 @@ namespace LNE
 
     HyperParameterGroup :: HyperParameterGroup ( const HyperParameterGroup & SourceGroup )
     {
+        NumberNetworksPerGroup = 0;
         * this = SourceGroup ;
     }
 
@@ -220,10 +223,10 @@ namespace LNE
     void HyperParameterGroup :: SortNetworks ( )
     {
         unsigned int NetworkIterator = 0 ;
-        while ( NetworkIterator < NumberNetworksPerGroup )
+        while ( NetworkIterator < NumberNetworksPerGroup - 1 )
         {
             unsigned int NetworkIterator2 = NetworkIterator ;
-            while ( NetworkIterator2 < NumberNetworksPerGroup )
+            while ( NetworkIterator2 < NumberNetworksPerGroup - 1 )
             {
                 if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) < Networks [ NetworkIterator2 + 1 ] -> GetFitness ( ) )
                 {
@@ -240,6 +243,11 @@ namespace LNE
     float HyperParameterGroup :: GetBestNetworkFitness ( ) const
     {
         return Networks [ 0 ] -> GetFitness ( ) ;
+    }
+
+    NeuralNetwork * HyperParameterGroup :: GetBestNetwork ( ) const
+    {
+        return Networks [ 0 ] ;
     }
 
     bool HyperParameterGroup :: AreNetworksDoneRunning ( ) const
@@ -534,6 +542,7 @@ namespace LNE
 
     void HyperParameterGroup :: CopyNetworks ( const vector < NeuralNetwork * > & SourceNetworks )
     {
+        Networks . resize ( SourceNetworks . size ( ) ) ;
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < SourceNetworks . size ( ) )
         {

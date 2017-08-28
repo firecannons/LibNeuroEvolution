@@ -13,7 +13,7 @@ namespace LNE
     const float WEIGHT_MAX = 5 ;
     const float WEIGHT_MIN = -5 ;
 
-    const float DEFAULT_FITNESS = 0 ;
+    const float DEFAULT_FITNESS = -999999999 ;
 
     class NeuralNetwork
     {
@@ -50,8 +50,8 @@ namespace LNE
         {
             Fitness = DEFAULT_FITNESS ;
             NumberLayersInNetwork = InSizes . size ( ) ;
-            unsigned int LayerIterator = 0 ;
             Layers . resize ( NumberLayersInNetwork ) ;
+            unsigned int LayerIterator = 0 ;
             while ( LayerIterator < InSizes . size ( ) )
             {
                 if ( LayerIterator == InSizes . size ( ) - 1 )
@@ -74,6 +74,7 @@ namespace LNE
 
     NeuralNetwork :: NeuralNetwork ( const NeuralNetwork & SourceNetwork )
     {
+        NumberLayersInNetwork = 0 ;
         * this = SourceNetwork ;
     }
 
@@ -84,9 +85,9 @@ namespace LNE
             return * this ;
         }
         Fitness = SourceNetwork . Fitness ;
-        NumberLayersInNetwork = SourceNetwork . NumberLayersInNetwork ;
         DeleteLayers ( ) ;
         CopyLayers ( SourceNetwork . Layers ) ;
+        NumberLayersInNetwork = SourceNetwork . NumberLayersInNetwork ;
         return * this;
     }
 
@@ -159,6 +160,7 @@ namespace LNE
 
     void NeuralNetwork :: CopyLayers ( const vector < Layer * > & SourceLayers )
     {
+        Layers . resize ( SourceLayers . size ( ) ) ;
         unsigned int LayerIterator = 0 ;
         while ( LayerIterator < SourceLayers . size ( ) )
         {

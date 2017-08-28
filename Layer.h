@@ -63,13 +63,13 @@ namespace LNE
     {
         if ( this == & SourceLayer )
         {
-            return * this;
+            return * this ;
         }
         SizeOfLayer = SourceLayer . SizeOfLayer ;
         SizeOfNextLayer = SourceLayer . SizeOfNextLayer ;
         Weights = SourceLayer . Weights ;
         Values = SourceLayer . Values ;
-        return *this;
+        return * this ;
     }
 
     void Layer :: SetAt ( unsigned int Position , float Value )
