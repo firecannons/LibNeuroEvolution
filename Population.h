@@ -7,8 +7,8 @@ using namespace std ;
 
 namespace LNE
 {
-    const float POPULATION_KILL_AMOUNT = 0.3 ;
-    const float POPULATION_MUTATE_AMOUNT = 0.3 ;
+    const float POPULATION_KILL_AMOUNT = 0.1 ;
+    const float POPULATION_MUTATE_AMOUNT = 0.1 ;
 
 
     class Population

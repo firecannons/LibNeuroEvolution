@@ -50,7 +50,7 @@ namespace LNE
 
     const float WEIGHT_SHIFT_CHANCE_MAX = 1 ;
     const float WEIGHT_SHIFT_CHANCE_MIN = 0 ;
-    const float DEFAULT_WEIGHT_SHIFT_CHANCE = 0.3 ;
+    const float DEFAULT_WEIGHT_SHIFT_CHANCE = 0.5 ;
     const float WEIGHT_SHIFT_CHANCE_SHIFT_CHANCE = 0.3 ;
     const float WEIGHT_SHIFT_CHANCE_NEW_CHANCE = 0.3 ;
     const float WEIGHT_SHIFT_CHANCE_SHIFT_MIN = -0.1 ;
@@ -60,7 +60,7 @@ namespace LNE
 
     const float WEIGHT_NEW_CHANCE_MAX = 1 ;
     const float WEIGHT_NEW_CHANCE_MIN = 0 ;
-    const float DEFAULT_WEIGHT_NEW_CHANCE = 0.3 ;
+    const float DEFAULT_WEIGHT_NEW_CHANCE = 0.5 ;
     const float WEIGHT_NEW_CHANCE_SHIFT_CHANCE = 0.3 ;
     const float WEIGHT_NEW_CHANCE_NEW_CHANCE = 0.3 ;
     const float WEIGHT_NEW_CHANCE_SHIFT_MIN = -0.1 ;
@@ -119,6 +119,8 @@ namespace LNE
             void Mutate ( ) ;
 
             void ResetIndexes ( ) ;
+
+            void RandomizeValues ( ) ;
 
 
 
@@ -294,6 +296,33 @@ namespace LNE
         ResolveNewWeightRange ( ) ;
         MutateWeightShiftChance ( ) ;
         MutateWeightNewChance ( ) ;
+    }
+
+    void HyperParameterGroup :: RandomizeValues ( )
+    {
+        float WeightShiftRangeTopRange = WEIGHT_SHIFT_RANGE_TOP_SHIFT_MAX - WEIGHT_SHIFT_RANGE_TOP_SHIFT_MIN ;
+        WeightShiftRangeTop = GetProb ( ) * WeightShiftRangeTopRange + WEIGHT_SHIFT_RANGE_TOP_SHIFT_MIN ;
+
+        float WeightShiftRangeBottomRange = WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MAX - WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+        WeightShiftRangeBottom = GetProb ( ) * WeightShiftRangeBottomRange + WEIGHT_SHIFT_RANGE_BOTTOM_SHIFT_MIN ;
+
+        float NewWeightRangeTopRange = NEW_WEIGHT_RANGE_TOP_NEW_MAX - NEW_WEIGHT_RANGE_TOP_NEW_MIN ;
+        NewWeightRangeTop = GetProb ( ) * NewWeightRangeTopRange + NEW_WEIGHT_RANGE_TOP_NEW_MIN ;
+
+        float NewWeightRangeBottomRange = NEW_WEIGHT_RANGE_BOTTOM_NEW_MAX - NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN ;
+        NewWeightRangeBottom = GetProb ( ) * NewWeightRangeBottomRange + NEW_WEIGHT_RANGE_BOTTOM_NEW_MIN ;
+
+        float KillRatioRange = KILL_RATIO_NEW_MAX - KILL_RATIO_NEW_MIN ;
+        KillRatio = GetProb ( ) * KillRatioRange + KILL_RATIO_NEW_MIN ;
+
+        float MutateRatioRange = MUTATE_RATIO_NEW_MAX - MUTATE_RATIO_NEW_MIN ;
+        MutateRatio = GetProb ( ) * MutateRatioRange + MUTATE_RATIO_NEW_MIN ;
+
+        float WeightShiftChanceRange = WEIGHT_SHIFT_CHANCE_NEW_MAX - WEIGHT_SHIFT_CHANCE_NEW_MIN ;
+        WeightShiftChance = GetProb ( ) * WeightShiftChanceRange + WEIGHT_SHIFT_CHANCE_NEW_MIN ;
+
+        float WeightNewChanceRange = WEIGHT_NEW_CHANCE_NEW_MAX - WEIGHT_NEW_CHANCE_NEW_MIN ;
+        WeightNewChance = GetProb ( ) * WeightNewChanceRange + WEIGHT_NEW_CHANCE_NEW_MIN ;
     }
 
     void HyperParameterGroup :: MutateWeightNewChance ( )
