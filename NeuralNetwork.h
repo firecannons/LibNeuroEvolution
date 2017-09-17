@@ -29,6 +29,8 @@ namespace LNE
             void Pump ( ) ;
             void SetFitness ( float InFitness ) ;
             float GetFitness ( ) const ;
+            Layer * GetLayer ( unsigned int LayerNumber ) ;
+            unsigned int GetNumberLayersInNetwork ( ) const ;
 
         private:
             float Fitness ;
@@ -115,6 +117,16 @@ namespace LNE
         return Output ;
     }
 
+    void NeuralNetwork :: Pump ( )
+    {
+        unsigned int LayerIterator = 0 ;
+        while ( LayerIterator < NumberLayersInNetwork - 1 )
+        {
+            Layers [ LayerIterator ] -> Pump ( * ( Layers [ LayerIterator + 1 ] ) ) ;
+            LayerIterator = LayerIterator + 1 ;
+        }
+    }
+
     void NeuralNetwork :: SetFitness ( float InFitness )
     {
         Fitness = InFitness ;
@@ -125,14 +137,14 @@ namespace LNE
         return Fitness ;
     }
 
-    void NeuralNetwork :: Pump ( )
+    Layer * NeuralNetwork :: GetLayer ( unsigned int LayerNumber )
     {
-        unsigned int LayerIterator = 0 ;
-        while ( LayerIterator < NumberLayersInNetwork - 1 )
-        {
-            Layers [ LayerIterator ] -> Pump ( * ( Layers [ LayerIterator + 1 ] ) ) ;
-            LayerIterator = LayerIterator + 1 ;
-        }
+        return Layers [ LayerNumber ] ;
+    }
+
+    unsigned int NeuralNetwork :: GetNumberLayersInNetwork ( ) const
+    {
+        return NumberLayersInNetwork ;
     }
 
     bool NeuralNetwork :: AreSizesOk ( vector < unsigned int > & InSizes ) const

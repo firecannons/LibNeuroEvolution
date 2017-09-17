@@ -21,6 +21,9 @@ namespace LNE
             void Pump ( Layer & DestLayer ) ;
             void Mutate ( float WeightShiftChance , float WeightNewChance , float WeightShiftRangeTop ,
                          float WeightShiftRangeBottom , float WeightNewRangeTop , float WeightNewRangeBottom ) ;
+            unsigned int GetSizeOfLayer ( ) ;
+            unsigned int GetSizeOfNextLayer ( ) ;
+            float GetWeightAt ( unsigned int IndexInLayer , unsigned int IndexInNextLayer ) const ;
 
         private:
             vector < vector < float > > Weights ;
@@ -95,6 +98,7 @@ namespace LNE
                 RowIterator = RowIterator + 1 ;
             }
             Sum = Relu ( Sum ) ;
+            //Sum = Heaviside ( Sum ) ;
             DestLayer . SetAt ( NextLayerIterator , Sum ) ;
             NextLayerIterator = NextLayerIterator + 1 ;
         }
@@ -129,6 +133,21 @@ namespace LNE
             }
             RowIterator = RowIterator + 1 ;
         }
+    }
+
+    unsigned int Layer :: GetSizeOfLayer ( )
+    {
+        return SizeOfLayer ;
+    }
+
+    unsigned int Layer :: GetSizeOfNextLayer ( )
+    {
+        return SizeOfNextLayer ;
+    }
+
+    float Layer :: GetWeightAt ( unsigned int IndexInLayer , unsigned int IndexInNextLayer ) const
+    {
+        return Weights [ IndexInLayer ] [ IndexInNextLayer ] ;
     }
 
     void Layer :: RandomizeWeights ( )

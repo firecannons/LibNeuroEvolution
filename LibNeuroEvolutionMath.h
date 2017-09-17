@@ -20,6 +20,19 @@ namespace LNE
         }
         return Input ;
     }
+
+    float Heaviside ( float Input )
+    {
+        if ( Input < 0.5 )
+        {
+            Input = 0 ;
+        }
+        else
+        {
+            Input = 1 ;
+        }
+        return Input ;
+    }
 }
 
 #endif
