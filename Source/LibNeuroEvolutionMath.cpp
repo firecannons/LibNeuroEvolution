@@ -1,11 +1,7 @@
-#ifndef LIBNEUROEVOLUTIONMATH_H
-#define LIBNEUROEVOLUTIONMATH_H
-
-#include <cstdlib>
+#include "LibNeuroEvolutionMath.h"
 
 namespace LNE
 {
-
     float GetProb ( )
     {
         float Output = ( ( float ) rand ( ) ) / RAND_MAX ;
@@ -34,5 +30,3 @@ namespace LNE
         return Input ;
     }
 }
-
-#endif
