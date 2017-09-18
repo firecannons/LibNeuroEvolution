@@ -2,9 +2,9 @@
 A library to optimize neural networks via evolutionary computing.
 
 ## How it works
-Your program creates a `Population` which will have `HyperParameterGroup`s inside of it.  Each `HyperParameterGroup` will have some neural networks inside of it.  Your simply have to have a task to test the neural networks on and loop through neural networks that your `Population` will give you.
+Your program creates a `Population`.  Then it must simply loop through Neural Networks that the `Population` will give it.
 
-Internally, a `Population` will evolve an array it `HyperParameterGroup`s it contains.  Each 'HyperParameterGroup' will evolve an array of `NeuralNetworks` it contains. 
+Internally, a `Population` will evolve an array of `HyperParameterGroups` it contains.  Each `HyperParameterGroup` will evolve an array of `NeuralNetworks` it contains. 
 
 
 ## The Source Code
