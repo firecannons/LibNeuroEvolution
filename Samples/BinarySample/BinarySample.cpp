@@ -35,13 +35,13 @@ const float STOP_TRAIN_ACCURACY = -0.001 ;
 
 int main ( )
 {
-		// Randomize RNG
+    // Randomize RNG
     srand ( time ( NULL ) ) ;
 		
-		// Each element in Sizes will represent the size of a layer
-		//     in the network.  Our network will have only an input layer
-		//     and an output layer.  The input layer will be size 2 and the output
-		//     layer will be size 1.
+    // Each element in Sizes will represent the size of a layer
+    //     in the network.  Our network will have only an input layer
+    //     and an output layer.  The input layer will be size 2 and the output
+    //     layer will be size 1.
     vector < unsigned int > Sizes ;
     Sizes . push_back ( 2 ) ;
     Sizes . push_back ( 1 ) ;
@@ -49,78 +49,78 @@ int main ( )
 		// Create a Population which contains HyperParameterGroups and networks
     Population MyPop ( Sizes , NUMBER_GROUPS , NUMBER_NETWORKS ,
 		    GROUP_EVOLUTION_GENERATIONS ) ;
-		
-		// *** Evolve networks ***
-		
+    
+    // *** Evolve networks ***
+    
     unsigned int GenerationIterator = 0 ;
-		// Check to see if the best fitness of any network is good enough to quit
-		//     evolution
+    // Check to see if the best fitness of any network is good enough to quit
+    //     evolution
     while ( MyPop . GetBestFitness ( ) < STOP_TRAIN_ACCURACY )
     {
         cout << "Generation: " << MyPop . GetCurrentGeneration ( ) <<
             "  Best Fitness: " << MyPop . GetBestFitness ( ) << endl ;
 						
-				// Check to see if we have evaluated all the networks
+        // Check to see if we have evaluated all the networks
         while ( MyPop . AreNetworksDoneRunning ( ) == false )
         {
             float Output = 0 ;
             float Cost = 0 ;
 						
-						// Get the current network from the MyPop
+            // Get the current network from the MyPop
             NeuralNetwork * CurrentNetwork = MyPop . GetCurrentNetwork ( ) ;
 						
-						// Input a 0 in position 0 and a 1 in position 1 in the input
-						//     layer. The 1 is just for bias in the neural network.
+            // Input a 0 in position 0 and a 1 in position 1 in the input
+            //     layer. The 1 is just for bias in the neural network.
             CurrentNetwork -> SetInput ( 0 , 0 ) ;
             CurrentNetwork -> SetInput ( 1 , 1 ) ;
 						
-						// Run the inputs through the network to the output layer
+            // Run the inputs through the network to the output layer
             CurrentNetwork -> Pump ( ) ;
 						
-						// Get output in position 0
+            // Get output in position 0
             Output = CurrentNetwork -> GetOutput ( 0 ) ;
 						
-						// Compare Output with 1 and calculate cost
+            // Compare Output with 1 and calculate cost
             Cost = Cost - abs ( Output - 1 ) ;
 						
-						// Input a 1 into position 0 and a 1 into position 1 for bias.
+            // Input a 1 into position 0 and a 1 into position 1 for bias.
             CurrentNetwork -> SetInput ( 0 , 1 ) ;
             CurrentNetwork -> SetInput ( 1 , 1 ) ;
             CurrentNetwork -> Pump ( ) ;
             Output = CurrentNetwork -> GetOutput ( 0 ) ;
 						
-						// Compare output with 0
+            // Compare output with 0
             Cost = Cost - abs ( Output - 0 ) ;
 						
-						// Set the fitness value for this network
+            // Set the fitness value for this network
             CurrentNetwork -> SetFitness ( Cost ) ;
 						
-						// MyPop will move to the next network
+            // MyPop will move to the next network
             MyPop . ToNextNetwork ( ) ;
         }
 				
-				// Move to next generation
+        // Move to next generation
         MyPop . EndGeneration ( ) ;
 				
         GenerationIterator = GenerationIterator + 1 ;
     }
 
-		// *** Now User Input ***
+    // *** Now User Input ***
 		
-		// Get the network with greatest fitness
+    // Get the network with greatest fitness
     NeuralNetwork * BestNetwork = MyPop . GetBestNetwork ( ) ;
 		
     unsigned int Input = 0 ;
     while ( Input != QUIT_PROGRAM_NUMBER )
     {
-				// Output prompt
+        // Output prompt
         cout << "Input a 0 or 1 and it will flip it to the opposite or input a 2 to quit the program: " ;
         cin >> Input ;
         if ( Input == 0 || Input == 1 )
         {
             float Output = 0 ;
 						
-						// Same process as before
+            // Same process as before
             BestNetwork -> SetInput ( 0 , Input ) ;
             BestNetwork -> SetInput ( 1 , 1 ) ;
             BestNetwork -> Pump ( ) ;
