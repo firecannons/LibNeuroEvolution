@@ -111,7 +111,7 @@ int main ( )
     NeuralNetwork * BestNetwork = MyPop . GetBestNetwork ( ) ;
 		
     unsigned int Input = 0 ;
-    while ( Input != 2 )
+    while ( Input != QUIT_PROGRAM_NUMBER )
     {
 				// Output prompt
         cout << "Input a 0 or 1 and it will flip it to the opposite or input a 2 to quit the program: " ;
