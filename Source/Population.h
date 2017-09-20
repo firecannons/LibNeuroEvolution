@@ -29,15 +29,9 @@ namespace LNE
         public:
             // Desc: The Population constructor creates a Population based
             //     on given parameters.
-            // Pre: InSizes must be a vector with length of the number of
-            //     layers you want in your network.  Each element in position n
-            //     must be the number of neurons you want in the nth layer.
-            //     InNumberGroups is the number of HyperParameterGroups in
-            //     the Population.
-            //     InNumberNetworksPerGroup is the number of networks per
-            //     HyperParameterGroup.
-            //     InGroupEvolutionGenerations is the number of generations
-            //     per evolution of the HyperParameterGroups.
+            // Pre: InSizes must be of least size 2 (there must be two or
+            //     more layers in the network).  Each element must be
+            //     greater than 0.
             // Post: A Population class based on the given parameters is
             //     constructed.
             Population( vector < unsigned int > InSizes ,
