@@ -29,64 +29,55 @@ namespace LNE
         public:
             // Desc: The Population constructor creates a Population based
             //     on given parameters.
-            // Pre: InSizes must be of least size 2 (there must be two or
-            //     more layers in the network).  Each element must be
-            //     greater than 0.
-            // Post: A Population class based on the given parameters is
-            //     constructed.
             Population( vector < unsigned int > InSizes ,
                 unsigned int InNumberGroups ,
                 unsigned int InNumberNetworksPerGroup ,
                 unsigned int InGroupEvolutionGenerations ) ;
             
-            // Desc: The Population destructor destroys a Population
-            // Pre: None.
-            // Post: The Population is destroyed.
+            // Desc: The Population destructor destroys a Population.
             ~ Population ( ) ;
             
             // Desc: The Population copy constructor constructs a Population
             //     based on another Population.
-            // Pre: None.
-            // Post: The a new Population is constructed.
             Population( const Population & SourcePopulation ) ;
             
             // Desc: The = operator will make the destination Population
             //     equal to the source operator.
-            // Pre: The source population must exist.
-            // Post: The destination Population will have be equal
-            //     to the source Population.
             Population & operator = ( const Population & SourcePopulation ) ;
 
 			// Desc: The GetCurrentGeneration function returns the value of
 			//     the CurrentGeneration variable.
-			// Pre: None.
-			// Post: CurrentGeneration is returned.
             unsigned int GetCurrentGeneration ( ) const ;
             
             // Desc: The AreNetworksDoneRunning function returns the value
             //     of whether the networks in this Population have all been
             //     evaluated.  This should be in a guard statement of a loop
             //     with GetCurrentNetwork.
-            // Pre: None.
-            // Post: The value of whether the this Population's networks
-            //     are done running is returned.
             bool AreNetworksDoneRunning ( ) const ;
             
             // Desc: The GetCurrentNetwork function will return the a pointer
             //     to the network in this Population who's turn it is to be
             //     evaluated.  This should be used in a loop for evaluating
             //     all the networks.
-            // Pre: None.
-            // Post: A pointer for the current network to evaluate is returned.
             NeuralNetwork * GetCurrentNetwork ( ) const ;
             
-            // Desc: The ToNextNetwork function will move to the next network.
+            // Desc: The ToNextNetwork function will move to the next network
+            //      to be evaluated.
             void ToNextNetwork ( ) ;
-
+            
+            // Desc: The EndGeneration function will perform evolutionary
+            //     computing on the networks and networks groups.  It will
+            //     also prepare this Population for the next generation.
             void EndGeneration ( ) ;
-
+            
+            // Desc: The GetBestFitness function will get the best fitness
+            //     value of all the fitness values of all the neural networks.
             float GetBestFitness ( ) ;
-
+            
+            // Desc: The GetBestNetwork function will the get the network with
+            //     the highest fitness value of any network in any group of
+            //     this Population.  This should be called after a call to
+            //     EndGeneration and not during the fitness evaluation loop.
             NeuralNetwork * GetBestNetwork ( ) const ;
 
 
