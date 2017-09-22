@@ -40,13 +40,13 @@ namespace LNE
                 unsigned int InGroupEvolutionGenerations ) ;
             
             // Desc: The Population destructor destroys a Population
-            // Pre: The Population must exist.
+            // Pre: None.
             // Post: The Population is destroyed.
             ~ Population ( ) ;
             
             // Desc: The Population copy constructor constructs a Population
             //     based on another Population.
-            // Pre: The source Population must exist.
+            // Pre: None.
             // Post: The a new Population is constructed.
             Population( const Population & SourcePopulation ) ;
             
@@ -57,12 +57,30 @@ namespace LNE
             //     to the source Population.
             Population & operator = ( const Population & SourcePopulation ) ;
 
+			// Desc: The GetCurrentGeneration function returns the value of
+			//     the CurrentGeneration variable.
+			// Pre: None.
+			// Post: CurrentGeneration is returned.
             unsigned int GetCurrentGeneration ( ) const ;
-
+            
+            // Desc: The AreNetworksDoneRunning function returns the value
+            //     of whether the networks in this Population have all been
+            //     evaluated.  This should be in a guard statement of a loop
+            //     with GetCurrentNetwork.
+            // Pre: None.
+            // Post: The value of whether the this Population's networks
+            //     are done running is returned.
             bool AreNetworksDoneRunning ( ) const ;
-
+            
+            // Desc: The GetCurrentNetwork function will return the a pointer
+            //     to the network in this Population who's turn it is to be
+            //     evaluated.  This should be used in a loop for evaluating
+            //     all the networks.
+            // Pre: None.
+            // Post: A pointer for the current network to evaluate is returned.
             NeuralNetwork * GetCurrentNetwork ( ) const ;
-
+            
+            // Desc: The ToNextNetwork function will move to the next network.
             void ToNextNetwork ( ) ;
 
             void EndGeneration ( ) ;
