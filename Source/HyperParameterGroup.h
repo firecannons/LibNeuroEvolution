@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: HyperParameterGroup.h
+    Date: 9/22/2017
+    Purpose: HyperParameterGroup.h contains declarations for the
+        HyperParameterGroup class in LibNeuroEvolution.
+*/
+
 #ifndef HYPERPARAMETERGROUP_H
 #define HYPERPARAMETERGROUP_H
 

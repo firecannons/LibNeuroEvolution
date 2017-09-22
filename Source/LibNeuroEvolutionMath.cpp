@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: LibNeuroEvolutionMath.cpp
+    Date: 9/22/2017
+    Purpose: LibNeuroEvolutionMath.cpp contains definitions for math functions
+        needed by LibNeuroEvolution.
+*/
+
 #include "LibNeuroEvolutionMath.h"
 
 namespace LNE

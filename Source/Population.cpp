@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: Population.cpp
+    Date: 9/22/2017
+    Purpose: Population.cpp contains definitions for the Population class
+        in LibNeuroEvolution.
+*/
+
 #include "Population.h"
 
 namespace LNE

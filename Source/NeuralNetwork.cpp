@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: NeuralNetwork.cpp
+    Date: 9/22/2017
+    Purpose: NeuralNetwork.cpp contains definitions for the NeuralNetwork class
+        in LibNeuroEvolution.
+*/
+
 #include "NeuralNetwork.h"
 
 namespace LNE

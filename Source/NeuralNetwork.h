@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: NeuralNetwork.h
+    Date: 9/22/2017
+    Purpose: NeuralNetwork.h contains declarations for the NeuralNetwork class
+        in LibNeuroEvolution.
+*/
+
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 

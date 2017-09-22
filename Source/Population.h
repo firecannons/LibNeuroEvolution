@@ -2,7 +2,7 @@
     Programmer: Lucas Winkelman
     File: Population.h
     Date: 9/19/2017
-    Purpose: Population.h contains definitions for the Population class
+    Purpose: Population.h contains declarations for the Population class
         in LibNeuroEvolution.
 */
 
@@ -15,12 +15,12 @@ using namespace std ;
 
 namespace LNE
 {
-        // Coefficient of the worst HyperParameterGroups to kill each generation
-        //     they are regenerated.
+    // Coefficient of the worst HyperParameterGroups to kill each generation
+    //     they are regenerated.
     const float POPULATION_KILL_AMOUNT = 0.1 ;
 		
-        // Coefficient of the worst HyperParameterGroups to mutate each generation
-        //     they are regenerated.
+    // Coefficient of the worst HyperParameterGroups to mutate each generation
+    //     they are regenerated.
     const float POPULATION_MUTATE_AMOUNT = 0.1 ;
 
 
@@ -101,7 +101,8 @@ namespace LNE
             void EvolveNetworks ( ) ;
             void ResetIndexes ( ) ;
             void DeleteGroups ( ) ;
-            void CopyGroups ( const vector < HyperParameterGroup * > & SourceGroups ) ;
+            void CopyGroups ( const vector < HyperParameterGroup * >
+                & SourceGroups ) ;
 
     };
 

@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: Layer.h
+    Date: 9/22/2017
+    Purpose: Layer.h contains declarations for the Layer class
+        in LibNeuroEvolution.
+*/
+
 #ifndef LAYER_H
 #define LAYER_H
 

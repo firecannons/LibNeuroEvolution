@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: HyperParameterGroup.cpp
+    Date: 9/22/2017
+    Purpose: HyperParameterGroup.cpp contains definitions for the
+        HyperParameterGroup class in LibNeuroEvolution.
+*/
+
 #include "HyperParameterGroup.h"
 
 namespace LNE

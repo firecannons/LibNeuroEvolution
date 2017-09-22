@@ -1,3 +1,11 @@
+/*
+    Programmer: Lucas Winkelman
+    File: Layer.cpp
+    Date: 9/22/2017
+    Purpose: Layer.cpp contains definitions for the Layer class
+        in LibNeuroEvolution.
+*/
+
 #include "Layer.h"
 
 namespace LNE
