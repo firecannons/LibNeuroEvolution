@@ -12,9 +12,10 @@ All of the source code for the library is in the Source folder.
 
 ## Running the Samples (BinarySample only currently)
 * First install make
-* Open a terminal and move to the LibNeuroEvolution main directory
-* Run `make`
-* Then run Bin/BinarySample
+* Clone or download the repository<br>`git clone https://github.com/firecannons/LibNeuroEvolution.git`
+* Navigate to the LibNeuroEvolution main directory<br>`cd LibNeuroEvolution`
+* Run make<br>`make`
+* Run binaries in the new Bin folder<br>`./Bin/BinarySample`
 
 ## Notes
 I found when trying the library on Tic-Tac-Toe that evolution became much slower as the size of the network increased.  If your problem is not very simple, you should use a neural network with backpropagation.
