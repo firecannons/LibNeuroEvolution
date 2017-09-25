@@ -28,7 +28,14 @@ namespace LNE
     {
         public:
             // Desc: The Population constructor creates a Population based
-            //     on given parameters.
+            //     on given parameters.  InSizes should be an array with
+            //     each element being the height of a layer in the neural
+            //     network.
+            // Pre: The minimum size for a neural network is two layers
+            //     and each layer must have at least one neuron.
+            //     InNumberGroups needs to be at least 10,
+            //     InNumberNetworksPerGroup needs to be greater than 2,
+            //     InGroupEvolutionGenerations needs to be greater than 1.
             Population( vector < unsigned int > InSizes ,
                 unsigned int InNumberGroups ,
                 unsigned int InNumberNetworksPerGroup ,
