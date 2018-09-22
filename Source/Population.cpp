@@ -156,16 +156,16 @@ namespace LNE
         GroupIterator = 0 ;
         while ( GroupIterator < NumberGroups - 1 )
         {
-            unsigned int GroupIterator2 = GroupIterator ;
-            while ( GroupIterator2 < NumberGroups - 1 )
+            unsigned int GroupIterator2 = NumberGroups - 1 ;
+            while ( GroupIterator2 > GroupIterator )
             {
-                if ( Groups [ GroupIterator2 ] -> GetBestNetworkFitness ( ) < Groups [ GroupIterator2 + 1 ] -> GetBestNetworkFitness ( ) )
+                if ( Groups [ GroupIterator2 ] -> GetBestNetworkFitness ( ) > Groups [ GroupIterator2 - 1 ] -> GetBestNetworkFitness ( ) )
                 {
                     HyperParameterGroup * Temp = Groups [ GroupIterator2 ] ;
-                    Groups [ GroupIterator2 ] = Groups [ GroupIterator2 + 1 ] ;
-                    Groups [ GroupIterator2 + 1 ] = Temp ;
+                    Groups [ GroupIterator2 ] = Groups [ GroupIterator2 - 1 ] ;
+                    Groups [ GroupIterator2 - 1 ] = Temp ;
                 }
-                GroupIterator2 = GroupIterator2 + 1 ;
+                GroupIterator2 = GroupIterator2 - 1 ;
             }
             GroupIterator = GroupIterator + 1 ;
         }

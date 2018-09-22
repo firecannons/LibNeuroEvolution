@@ -79,16 +79,16 @@ namespace LNE
         unsigned int NetworkIterator = 0 ;
         while ( NetworkIterator < NumberNetworksPerGroup - 1 )
         {
-            unsigned int NetworkIterator2 = NetworkIterator ;
-            while ( NetworkIterator2 < NumberNetworksPerGroup - 1 )
+            unsigned int NetworkIterator2 = NumberNetworksPerGroup - 1 ;
+            while ( NetworkIterator2 > NetworkIterator )
             {
-                if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) < Networks [ NetworkIterator2 + 1 ] -> GetFitness ( ) )
+                if ( Networks [ NetworkIterator2 ] -> GetFitness ( ) > Networks [ NetworkIterator2 - 1 ] -> GetFitness ( ) )
                 {
                     NeuralNetwork * Temp = Networks [ NetworkIterator2 ] ;
-                    Networks [ NetworkIterator2 ] = Networks [ NetworkIterator2 + 1 ] ;
-                    Networks [ NetworkIterator2 + 1 ] = Temp ;
+                    Networks [ NetworkIterator2 ] = Networks [ NetworkIterator2 - 1 ] ;
+                    Networks [ NetworkIterator2 - 1 ] = Temp ;
                 }
-                NetworkIterator2 = NetworkIterator2 + 1 ;
+                NetworkIterator2 = NetworkIterator2 - 1 ;
             }
             NetworkIterator = NetworkIterator + 1 ;
         }
